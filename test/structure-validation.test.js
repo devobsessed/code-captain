@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import fs from "fs/promises";
 import {
   extractCommandName,
   getCommandFiles,
@@ -218,6 +219,38 @@ describe("Structure Validation Tests", () => {
           expect(hasActionWords).toBe(true);
         }
       }
+    });
+  });
+
+  describe("Directory.Build.props Template", () => {
+    let content;
+
+    test("template is valid XML structure", async () => {
+      content = await fs.readFile("copilot/Directory.Build.props", "utf8");
+      expect(content).toMatch(/^<Project>/);
+      expect(content).toMatch(/<\/Project>\s*$/);
+    });
+
+    test("template has Code Captain label marker", async () => {
+      content = await fs.readFile("copilot/Directory.Build.props", "utf8");
+      expect(content).toContain('Label="Code Captain"');
+    });
+
+    test("template includes copilot-instructions.md", async () => {
+      content = await fs.readFile("copilot/Directory.Build.props", "utf8");
+      expect(content).toContain(".github\\copilot-instructions.md");
+    });
+
+    test("template includes wildcard patterns for agents and prompts", async () => {
+      content = await fs.readFile("copilot/Directory.Build.props", "utf8");
+      expect(content).toContain(".github\\agents\\**\\*");
+      expect(content).toContain(".github\\prompts\\**\\*");
+    });
+
+    test("template uses Link attributes for virtual folders", async () => {
+      content = await fs.readFile("copilot/Directory.Build.props", "utf8");
+      const linkCount = (content.match(/Link="/g) || []).length;
+      expect(linkCount).toBeGreaterThanOrEqual(3);
     });
   });
 

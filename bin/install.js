@@ -691,6 +691,11 @@ class CodeCaptainInstaller {
           },
           { name: "Copilot Agents", value: "agents", checked: true },
           { name: "Copilot Prompts", value: "prompts", checked: true },
+          {
+            name: "VS Solution View (Directory.Build.props)",
+            value: "vs-solution",
+            checked: false,
+          },
         ];
 
       case "claude":
@@ -850,6 +855,75 @@ class CodeCaptainInstaller {
     } catch (error) {
       throw new Error(`Failed to download ${relativePath}: ${error.message}`);
     }
+  }
+
+  // Install Directory.Build.props with merge support
+  async installDirectoryBuildProps() {
+    const targetPath = "Directory.Build.props";
+    const templateSource = "copilot/Directory.Build.props";
+    const marker = 'Label="Code Captain"';
+
+    // Read template content
+    let templateContent;
+    if (this.config.localSource) {
+      const localPath = path.join(this.config.localSource, templateSource);
+      templateContent = await fs.readFile(localPath, "utf8");
+    } else {
+      const url = `${this.config.baseUrl}/${templateSource}`;
+      const response = await this.fetchWithTimeout(url, {}, 20000);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      templateContent = await response.text();
+    }
+
+    // Extract the ItemGroup block from template
+    const itemGroupMatch = templateContent.match(
+      /[ \t]*<ItemGroup Label="Code Captain">[\s\S]*?<\/ItemGroup>/
+    );
+    if (!itemGroupMatch) {
+      throw new Error("Template missing Code Captain ItemGroup");
+    }
+    const itemGroupBlock = itemGroupMatch[0];
+
+    const exists = await fs.pathExists(targetPath);
+
+    if (!exists) {
+      // Case 1: File doesn't exist — create from template
+      await fs.writeFile(targetPath, templateContent);
+      return { action: "created" };
+    }
+
+    // File exists — read it
+    const existingContent = await fs.readFile(targetPath, "utf8");
+
+    if (existingContent.includes(marker)) {
+      // Case 3: Already has Code Captain content — replace if changed
+      const existingBlock = existingContent.match(
+        /[ \t]*<ItemGroup Label="Code Captain">[\s\S]*?<\/ItemGroup>/
+      );
+      if (existingBlock && existingBlock[0] === itemGroupBlock) {
+        return { action: "up-to-date" };
+      }
+
+      // Replace existing block
+      await fs.copy(targetPath, `${targetPath}.backup`);
+      const updatedContent = existingContent.replace(
+        /[ \t]*<ItemGroup Label="Code Captain">[\s\S]*?<\/ItemGroup>/,
+        itemGroupBlock
+      );
+      await fs.writeFile(targetPath, updatedContent);
+      return { action: "updated" };
+    }
+
+    // Case 2: File exists, no Code Captain content — inject before </Project>
+    await fs.copy(targetPath, `${targetPath}.backup`);
+    const injectedContent = existingContent.replace(
+      /<\/Project>/,
+      `\n${itemGroupBlock}\n</Project>`
+    );
+    await fs.writeFile(targetPath, injectedContent);
+    return { action: "merged" };
   }
 
   // Get IDE-specific file list
@@ -1029,6 +1103,17 @@ class CodeCaptainInstaller {
         spinner.text = `Installing files... (${completed}/${files.length})`;
       }
 
+      // Handle Directory.Build.props for vs-solution component (opt-in only, not in installAll)
+      let vsSolutionResult = null;
+      if (
+        !installOptions.installAll &&
+        selectedComponents &&
+        selectedComponents.includes("vs-solution")
+      ) {
+        spinner.text = "Installing Directory.Build.props...";
+        vsSolutionResult = await this.installDirectoryBuildProps();
+      }
+
       spinner.succeed(
         `${this.ides[selectedIDE].name} integration installed successfully!`
       );
@@ -1050,6 +1135,7 @@ class CodeCaptainInstaller {
             installOptions.changeInfo.newFiles.length > 0),
         backupsCreated: backupPaths.length > 0,
         backupPaths: backupPaths,
+        vsSolutionResult,
       };
     } catch (error) {
       spinner.fail("Installation failed");
@@ -1171,6 +1257,18 @@ class CodeCaptainInstaller {
             " Import agent contexts directly into Claude conversations"
         );
         break;
+    }
+
+    // Show Directory.Build.props result if applicable
+    if (installResult.vsSolutionResult) {
+      const action = installResult.vsSolutionResult.action;
+      const messages = {
+        created: "Created Directory.Build.props — .github/ files now visible in VS Solution Explorer",
+        merged: "Merged Code Captain items into existing Directory.Build.props (backup saved as .backup)",
+        updated: "Updated Code Captain section in Directory.Build.props (backup saved as .backup)",
+        "up-to-date": "Directory.Build.props is already up to date",
+      };
+      console.log(chalk.cyan("\n📁 VS Solution View:"), messages[action]);
     }
 
     console.log(
