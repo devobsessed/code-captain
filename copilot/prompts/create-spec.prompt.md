@@ -1,20 +1,15 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Generate feature specifications using a contract-first approach"
 ---
 
-# Create Spec Command
+# You are executing the Create Spec command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Generate comprehensive feature specifications using a contract-first approach that ensures complete alignment between developer and AI before creating any supporting files. This command eliminates presumptuous file creation by establishing a clear "contract" through structured clarification rounds.
-
-## Command Process
+Your mission: Turn the user's rough feature idea into a clear work specification using a contract-first approach. Establish complete alignment through structured clarification rounds before creating any files.
 
 ### Phase 1: Contract Establishment (No File Creation)
-
-**Mission Statement:**
-
-> Your goal is to turn my rough feature idea into a very clear work specification. You will deliver the complete spec package only after we both agree on the requirements contract. **Important: Challenge ideas that don't make technical or business sense - it's better to surface concerns early than build the wrong thing.**
 
 #### Step 1.1: Initial Context Scan
 
@@ -105,11 +100,11 @@ When confident, present a contract proposal with any concerns surfaced:
 - In Scope: [2-3 key features]
 - Out of Scope: [2-3 things we won't build]
 
-**⚠️ Technical Concerns (if any):**
+**Technical Concerns (if any):**
 - [Specific concern about feasibility, performance, or architecture]
 - [Suggested alternative or mitigation approach]
 
-**💡 Recommendations:**
+**Recommendations:**
 - [Suggestions for improving the approach based on codebase analysis]
 - [Ways to reduce risk or complexity]
 
@@ -161,8 +156,8 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 # [Feature Name] Specification
 
 > Created: [DATE from Step 2.1 determination process]
-> Status: Planning  
-> Contract Locked: ✅
+> Status: Planning
+> Contract Locked: Yes
 
 ## Contract Summary
 
@@ -220,7 +215,7 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 ## User Story
 
 **As a** [user type from clarification]
-**I want to** [action from contract]  
+**I want to** [action from contract]
 **So that** [value from contract must-include]
 
 ## Acceptance Criteria
@@ -264,32 +259,7 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 
 #### Step 2.5: Create User Stories Folder Structure
 
-**user-stories/ folder** - Organized individual story files with focused task groups:
-
-**Structure Philosophy:**
-
-- Each user story gets its own file for better organization
-- Implementation tasks are kept small and focused (max 5-7 per story)
-- Complex stories are broken into multiple smaller stories
-- README.md provides overview and progress tracking
-- Acceptance criteria become verification checkpoints
-- Each story follows TDD: test → implement → verify acceptance criteria
-
-**Benefits of Folder Structure:**
-
-- **Manageability**: Each file stays focused and readable
-- **Navigation**: Easy to find and work on specific stories
-- **Parallel Work**: Multiple developers can work on different stories
-- **Version Control**: Smaller, focused diffs when stories change
-- **Progress Tracking**: Clear visibility of completion status
-- **Traceability**: Every technical task traces to user value
-
-**File Organization:**
-
-- **README.md**: Overview, progress summary, dependencies
-- **story-N-{name}.md**: Individual stories with focused tasks (5-7 tasks max)
-- **Story Naming**: Clear, descriptive names for easy identification
-- **Task Numbering**: N.1, N.2, N.3... within each story file
+Each user story gets its own file for better organization. Keep implementation tasks small and focused (max 5-7 per story). Complex stories should be broken into multiple smaller stories. Each story follows TDD: test, implement, verify acceptance criteria.
 
 **Task Breakdown Strategy:**
 
@@ -304,23 +274,22 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 Present complete package with file references:
 
 ```
-✅ Specification package created successfully!
+Specification package created successfully!
 
-📁 .code-captain/specs/[DATE]-feature-name/
-├── 📋 spec.md - Main specification document
-├── 📝 spec-lite.md - AI context summary
-├── 👥 user-stories/ - Individual user story files
-│   ├── 📊 README.md - Overview and progress tracking
-│   ├── 📝 story-1-{name}.md - Focused story with 5-7 tasks
-│   ├── 📝 story-2-{name}.md - Manageable task groups
-│   └── 📝 story-N-{name}.md - Easy navigation and parallel work
-└── 📂 sub-specs/
-    ├── 🔧 technical-spec.md - Technical requirements
+.code-captain/specs/[DATE]-feature-name/
+├── spec.md - Main specification document
+├── spec-lite.md - AI context summary
+├── user-stories/ - Individual user story files
+│   ├── README.md - Overview and progress tracking
+│   ├── story-1-{name}.md - Focused story with 5-7 tasks
+│   ├── story-2-{name}.md - Manageable task groups
+│   └── story-N-{name}.md - Easy navigation and parallel work
+└── sub-specs/
+    ├── technical-spec.md - Technical requirements
     [Additional specs as created]
 
 **Stories Created:** [N] user stories with focused task groups (max 5-7 tasks each)
 **Total Tasks:** [X] implementation tasks across all stories
-**Organization:** Each story is self-contained for better workflow management
 
 Please take a moment to review the specification documents. The spec captures everything we discussed, including:
 - [Brief summary of key features/requirements]
@@ -332,12 +301,6 @@ Please read through the files and let me know:
 - Are there any missing requirements or incorrect assumptions?
 - Are the user stories appropriately sized (5-7 tasks each)?
 - Should any stories be split further or combined?
-
-The user-stories folder structure allows you to:
-- Work on one story at a time for focused development
-- Track progress easily with the README overview
-- Assign different stories to different team members
-- Keep task lists manageable and actionable
 
 Once you're satisfied with the specification, I can help you start implementation with the first story, or we can make any needed adjustments.
 ```
@@ -358,34 +321,7 @@ Once you're satisfied with the specification, I can help you start implementatio
 - User stories organized in individual files for better management
 - Technical sub-specs created only when relevant
 
-## Key Improvements Over Original
-
-### 1. Contract-First Approach
-
-- **No presumptuous file creation** - Nothing gets built until contract is locked
-- **Structured clarification** - One question at a time, building understanding
-- **Echo check validation** - Clear contract summary before proceeding
-
-### 2. Codebase-Aware Questioning
-
-- **Context scanning between questions** - Each answer triggers fresh codebase analysis
-- **Integration-focused queries** - Questions shaped by what exists in the codebase
-- **Architecture consistency** - Recommendations align with existing patterns
-
-### 3. User Control & Transparency
-
-- **Clear decision points** - User explicitly approves before file creation
-- **Risk assessment option** - Can explore implementation risks before committing
-- **Blueprint preview** - Can see planned structure before creation
-- **Edit capability** - Can modify contract before locking
-
-### 4. Efficient Clarification Process
-
-- **Gap enumeration** - Systematically identifies all unknowns
-- **95% confidence threshold** - Stops asking when ready to deliver
-- **Token efficiency** - Focused questions, no verbose explanations during clarification
-
-## Example Usage Flow
+## Example of expected interaction
 
 ```
 Developer: /create-spec "real-time multiplayer chat with blockchain integration"
@@ -414,34 +350,11 @@ Agent: [Continues with more informed questions about the hybrid architecture...]
 
 **Deliverable:** Hybrid real-time chat with immediate message delivery and background blockchain verification for anti-spam
 
-**Must Include:** Sub-second message delivery while maintaining blockchain verification for spam prevention
-
-**Hardest Constraint:** Balancing real-time UX with blockchain settlement delays and gas cost management
-
-**⚠️ Technical Concerns:**
-- Gas costs could make casual chat expensive ($1-5 per message during network congestion)
-- Background settlement failures need graceful handling and user notification
-- Wallet integration adds authentication complexity to existing simple auth system
-
-**💡 Recommendations:**
-- Consider Layer 2 solution (Polygon) to reduce gas costs to $0.01-0.10 per message
-- Implement message batching to settle multiple messages in single transaction
-- Add fallback mode for when blockchain settlement fails
-
-**Success Criteria:** Messages appear instantly, spam is prevented via crypto payments, blockchain verification happens within 5 minutes
-
-**Scope Boundaries:**
-- In Scope: Real-time chat, wallet integration, background blockchain settlement
-- Out of Scope: Advanced chat features (file sharing, voice), custom token creation
-
----
-Options: [yes/edit/risks/blueprint]
+...
 
 Developer: yes
 
-Agent: ✅ Contract locked! Creating specification package...
+Agent: Contract locked! Creating specification package...
 
 [Creates files that account for the technical concerns and hybrid architecture discussed]
 ```
-
-This approach ensures that every specification is built on solid understanding rather than assumptions, while respecting the developer's time and maintaining control over the process.

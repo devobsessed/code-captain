@@ -89,7 +89,7 @@ export const PLATFORM_CONFIG = {
     directory: "copilot/prompts",
     extension: ".prompt.md",
     prefix: "/",
-    requiredFrontmatter: { agent: "Code Captain" },
+    requiredFrontmatter: { agent: "agent" },
   },
   claude: {
     directory: "claude-code/commands",

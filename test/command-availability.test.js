@@ -68,6 +68,12 @@ describe("Command Availability Smoke Tests", () => {
         await fileExists("copilot/agents/Code Captain.agent.md")
       ).toBe(true);
     });
+
+    test("copilot has instructions file", async () => {
+      expect(
+        await fileExists("copilot/copilot-instructions.md")
+      ).toBe(true);
+    });
   });
 
   describe("Command Discovery", () => {

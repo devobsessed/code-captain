@@ -37,9 +37,10 @@ class CodeCaptainInstaller {
       },
       copilot: {
         name: "Copilot",
-        description: "Visual Studio Code with Copilot extension",
+        description:
+          "VS Code or Visual Studio with GitHub Copilot",
         details:
-          "Uses .github/agents/ + .github/prompts/ + .code-captain/docs/",
+          "Uses .github/copilot-instructions.md + .github/agents/ + .github/prompts/ + .code-captain/docs/",
       },
       claude: {
         name: "Claude Code",
@@ -125,7 +126,11 @@ class CodeCaptainInstaller {
         ".cursor/rules/cc.mdc",
         ".cursor/rules/",
       ],
-      "Copilot Integration": [".github/agents/", ".github/prompts/"],
+      "Copilot Integration": [
+        ".github/copilot-instructions.md",
+        ".github/agents/",
+        ".github/prompts/",
+      ],
       "Claude Integration": [
         ".code-captain/claude/",
         "claude-code/",
@@ -679,6 +684,11 @@ class CodeCaptainInstaller {
       case "copilot":
         return [
           ...baseChoices,
+          {
+            name: "Copilot Instructions (.github/copilot-instructions.md)",
+            value: "instructions",
+            checked: true,
+          },
           { name: "Copilot Agents", value: "agents", checked: true },
           { name: "Copilot Prompts", value: "prompts", checked: true },
         ];
@@ -897,6 +907,15 @@ class CodeCaptainInstaller {
         break;
 
       case "copilot":
+        // Instructions
+        if (includeAll || selectedComponents.includes("instructions")) {
+          files.push({
+            source: "copilot/copilot-instructions.md",
+            target: ".github/copilot-instructions.md",
+            component: "instructions",
+          });
+        }
+
         // Agents
         if (includeAll || selectedComponents.includes("agents")) {
           files.push({
@@ -1101,21 +1120,32 @@ class CodeCaptainInstaller {
       case "copilot":
         console.log(
           chalk.blue("1.") +
-            " Restart VS Code to load agents from " +
-            chalk.cyan(".github/agents/")
+            " Restart your IDE to load the new files"
         );
-        console.log(chalk.blue("2.") + " Open Copilot Chat in VS Code");
+        console.log(
+          chalk.blue("2.") +
+            " " +
+            chalk.cyan(".github/copilot-instructions.md") +
+            " is automatically included in every Copilot request"
+        );
+        console.log(
+          chalk.bold.yellow("\n   VS Code:")
+        );
         console.log(
           chalk.blue("3.") +
             " Select the " +
             chalk.cyan("Code Captain") +
-            " agent from the agent picker"
+            " agent from the agent picker, or invoke prompts with " +
+            chalk.cyan("/command-name")
+        );
+        console.log(
+          chalk.bold.yellow("\n   Visual Studio:")
         );
         console.log(
           chalk.blue("4.") +
-            " Use prompts from " +
-            chalk.cyan(".github/prompts/") +
-            " for workflows"
+            " Invoke prompts with " +
+            chalk.cyan("#command-name") +
+            " in Copilot Chat (agents are not supported)"
         );
         break;
 

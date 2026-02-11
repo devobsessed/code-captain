@@ -16,7 +16,19 @@ describe("Structure Validation Tests", () => {
         const { data } = await parseMarkdownFile(filePath);
 
         expect(() => validateFrontmatter(data, "copilot")).not.toThrow();
-        expect(data.agent).toBe("Code Captain");
+        expect(data.agent).toBe("agent");
+      }
+    });
+
+    test("copilot prompts have description in frontmatter", async () => {
+      const commandFiles = await getCommandFiles("copilot");
+
+      for (const filePath of commandFiles) {
+        const { data } = await parseMarkdownFile(filePath);
+
+        expect(data.description).toBeDefined();
+        expect(typeof data.description).toBe("string");
+        expect(data.description.length).toBeGreaterThan(0);
       }
     });
 
@@ -33,24 +45,37 @@ describe("Structure Validation Tests", () => {
   });
 
   describe("Content Structure", () => {
-    test.each(["cursor", "copilot"])(
-      "platform %s commands have proper headers",
-      async (platform) => {
-        const commandFiles = await getCommandFiles(platform);
+    test("cursor commands have proper headers", async () => {
+      const commandFiles = await getCommandFiles("cursor");
 
-        for (const filePath of commandFiles) {
-          const { content } = await parseMarkdownFile(filePath);
+      for (const filePath of commandFiles) {
+        const { content } = await parseMarkdownFile(filePath);
 
-          // Should have at least one H1 header
-          expect(content).toMatch(/^#\s+.+/m);
+        // Should have at least one H1 header
+        expect(content).toMatch(/^#\s+.+/m);
 
-          // Should have overview or description section
-          expect(content).toMatch(
-            /##\s+(overview|description|command process)/i
-          );
-        }
+        // Should have overview or description section
+        expect(content).toMatch(
+          /##\s+(overview|description|command process)/i
+        );
       }
-    );
+    });
+
+    test("copilot commands have proper headers", async () => {
+      const commandFiles = await getCommandFiles("copilot");
+
+      for (const filePath of commandFiles) {
+        const { content } = await parseMarkdownFile(filePath);
+
+        // Should have at least one H1 header
+        expect(content).toMatch(/^#\s+.+/m);
+
+        // Copilot prompts use imperative framing instead of ## Overview
+        expect(content).toMatch(
+          /You (MUST|are executing)/
+        );
+      }
+    });
 
     test("create-spec commands follow contract-first structure", async () => {
       const platforms = ["cursor", "copilot"];

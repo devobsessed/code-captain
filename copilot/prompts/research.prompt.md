@@ -1,22 +1,13 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Conduct systematic research using structured phases"
 ---
 
-# Research Command
+# You are executing the Research command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Conduct systematic research on a topic using structured phases that build upon each other, creating actionable insights and leveraging web research capabilities.
-
-## When to Use
-
-- Investigating new technologies, frameworks, or tools
-- Understanding problem domains before solution design
-- Competitive analysis and market research
-- Technical feasibility studies
-- Learning about best practices in unfamiliar areas
-
-## Command Process
+Your mission: Conduct systematic research on the given topic using structured phases that build upon each other, creating actionable insights and leveraging web research capabilities.
 
 ### Phase 1: Define Research Scope
 
@@ -28,13 +19,6 @@ Conduct systematic research on a topic using structured phases that build upon e
 2. Identify key stakeholders and their information needs
 3. Set success criteria for the research
 4. Plan research phases and approach
-
-**Research Structure:**
-
-- Phase 1: Define scope and questions [in_progress]
-- Phase 2: Initial discovery [pending]
-- Phase 3: Deep dive analysis [pending]
-- Phase 4: Synthesis and recommendations [pending]
 
 ### Phase 2: Initial Discovery
 
@@ -53,7 +37,7 @@ Conduct systematic research on a topic using structured phases that build upon e
 
 **Search Strategy:**
 
-- Start with general terms: "[topic] overview", "[topic] 2024", "[topic] trends"
+- Start with general terms: "[topic] overview", "[topic] trends"
 - Look for authoritative sources: documentation, whitepapers, industry reports
 - Note recurring themes and terminology for Phase 3
 
@@ -89,8 +73,8 @@ Conduct systematic research on a topic using structured phases that build upon e
 3. Identify next steps or areas requiring further investigation
 4. Document sources and evidence for claims
 5. Get current date using: `npx @devobsessed/code-captain date`
-6. Create research document in `.code-captain/research/` folder using the standardized format below
-7. Present findings in appropriate format (summary document, recommendations)
+6. Create research document in `.code-captain/research/` folder
+7. Present findings in appropriate format
 
 **Deliverables:**
 
@@ -99,35 +83,7 @@ Conduct systematic research on a topic using structured phases that build upon e
 - Specific recommendations with rationale
 - Risk assessment and mitigation strategies
 - Further research needs
-- **Research document:** `.code-captain/research/[DATE]-[topic-name]-research.md` (get DATE using file system method below)
-
-## Output Structure
-
-### Research Summary
-
-- **Research Question(s):** [What you set out to learn]
-- **Key Findings:** [3-5 bullet points of most important discoveries]
-- **Recommendations:** [Actionable next steps based on research]
-
-### Detailed Findings
-
-- **Background/Context:** [Setting the stage]
-- **Current State:** [What exists today]
-- **Options Analysis:** [Comparison of alternatives]
-- **Evidence:** [Supporting data, quotes, sources]
-
-### Next Steps
-
-- **Immediate Actions:** [What to do next]
-- **Further Research:** [What questions remain]
-- **Decision Points:** [Key choices that need to be made]
-
-## Date Determination
-
-Get current date by running: `npx @devobsessed/code-captain date`
-
-This returns the current date in `YYYY-MM-DD` format for folder naming:
-`.code-captain/research/[DATE]-[topic-name]-research.md`
+- **Research document:** `.code-captain/research/[DATE]-[topic-name]-research.md`
 
 ## Research Document Template
 
@@ -135,14 +91,12 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 
 Create a markdown file in `.code-captain/research/[DATE]-[topic-name]-research.md`.
 
-**Example:** `.code-captain/research/2024-01-15-blockchain-supply-chain-research.md`
-
 Use the following structure:
 
 ```markdown
 # [Topic Name] Research
 
-**Date:** [Use date from file system determination process]
+**Date:** [Use date from determination process]
 **Researcher:** [Name]
 **Status:** [In Progress/Complete]
 
@@ -174,8 +128,6 @@ Use the following structure:
 - **Evidence:** [Supporting data/sources]
 - **Implications:** [What this means for the project/decision]
 
-[Continue for each major finding...]
-
 ## Options Analysis
 
 ### Option 1: [Name]
@@ -192,8 +144,6 @@ Use the following structure:
 - **Cost/Effort:** [Implementation requirements]
 - **Risk Level:** [High/Medium/Low with explanation]
 
-[Continue for each option...]
-
 ## Recommendations
 
 ### Primary Recommendation
@@ -204,29 +154,19 @@ Use the following structure:
 
 [Secondary options if primary recommendation isn't feasible]
 
-### Implementation Considerations
-
-[Key factors to consider when moving forward]
-
 ## Risks & Mitigation
 
-- **Risk 1:** [Description] → **Mitigation:** [How to address]
-- **Risk 2:** [Description] → **Mitigation:** [How to address]
+- **Risk 1:** [Description] -> **Mitigation:** [How to address]
+- **Risk 2:** [Description] -> **Mitigation:** [How to address]
 
 ## Further Research Needed
 
-- [Question/area that needs additional investigation]
 - [Question/area that needs additional investigation]
 
 ## Sources
 
 - [Source 1 with URL and access date]
 - [Source 2 with URL and access date]
-- [Continue listing all sources used...]
-
-## Appendix
-
-[Additional detailed information, raw data, extended quotes, etc.]
 ```
 
 ## Tool Integration
@@ -244,70 +184,3 @@ Use the following structure:
 - Research documents stored in `.code-captain/research/`
 - Date-prefixed filenames for chronological organization
 - Cross-references to related project documentation
-
-## Best Practices
-
-### Search Strategy
-
-- Start broad, then narrow down
-- Use multiple search terms and phrasings
-- Look for recent content (last 1-2 years) for rapidly evolving topics
-- Cross-reference information from multiple sources
-- Search for both benefits AND criticisms
-
-### Critical Thinking
-
-- Question assumptions and biases in sources
-- Look for evidence, not just opinions
-- Consider the source's credibility and potential conflicts of interest
-- Distinguish between correlation and causation
-- Identify what information is missing
-
-### Documentation
-
-- Keep track of sources for all claims
-- Note the date of information (especially for fast-moving topics)
-- Document your search process for reproducibility
-- Save important quotes with proper attribution
-
-## Common Pitfalls to Avoid
-
-- Confirmation bias (only seeking information that supports preconceived notions)
-- Stopping research too early when findings seem obvious
-- Not considering implementation challenges
-- Ignoring edge cases or limitations
-- Failing to consider stakeholder perspectives beyond your own
-
-## Example Research Progression
-
-**Initial Phase:**
-
-```
-- Research blockchain solutions for supply chain [in_progress]
-- Analyze implementation approaches [pending]
-- Evaluate vendor options [pending]
-- Create research document in .code-captain/research/ [pending]
-- Create recommendation report [pending]
-```
-
-**After Phase 2:**
-
-```
-- Research blockchain solutions for supply chain [completed]
-- Analyze implementation approaches [in_progress]
-- Evaluate vendor options [pending]
-- Determine date using file system method [pending]
-- Create research document in .code-captain/research/ [pending]
-- Create recommendation report [pending]
-```
-
-**Final:**
-
-```
-- Research blockchain solutions for supply chain [completed]
-- Analyze implementation approaches [completed]
-- Evaluate vendor options [completed]
-- Determine date using file system method [completed]
-- Create research document in .code-captain/research/ [completed]
-- Create recommendation report [completed]
-```

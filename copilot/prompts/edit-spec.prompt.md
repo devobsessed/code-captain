@@ -1,19 +1,15 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Modify existing feature specifications with change tracking"
 ---
 
-# Edit Spec Command
+# You are executing the Edit Spec command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Modify existing feature specifications using a contract-first approach that ensures complete alignment between developer and AI before updating any supporting files. This command prevents assumptions by establishing a clear "modification contract" through structured clarification rounds.
-
-## Command Process
+Your mission: Modify an existing feature specification safely and precisely using a contract-first approach. Establish complete alignment on the modifications before updating any files.
 
 ### Phase 1: Specification Loading & Change Contract (No File Modifications)
-
-**Mission Statement:**
-> Your goal is to help me modify an existing specification safely and precisely. You will deliver the updated spec package only after we both agree on the modification contract. **Important: Challenge changes that could break existing functionality or create technical debt - it's better to surface concerns early than implement problematic modifications.**
 
 #### Step 1.1: Specification Discovery & Loading
 
@@ -83,13 +79,6 @@ Modify existing feature specifications using a contract-first approach that ensu
 - **Scope Creep**: Are we expanding beyond the original contract boundaries?
 - **Business Value**: Do changes improve or compromise original user value?
 
-**Question Categories (examples):**
-- "This change would affect [existing user story]. Should we modify that story or create a new one?"
-- "I see this conflicts with [existing implementation]. Should we plan a migration strategy?"
-- "This modification increases complexity in [area]. Is the added value worth the technical cost?"
-- "The original spec was focused on [goal]. How does this change serve that same goal?"
-- "This would require changes to [dependent system]. Have you considered the downstream impact?"
-
 #### Step 1.4: Modification Contract Proposal
 
 When confident about changes, present a modification contract:
@@ -109,7 +98,7 @@ When confident about changes, present a modification contract:
 - **New Stories Required:** [Any additional story files to be created]
 - **Stories to Remove/Combine:** [Any story files that become obsolete]
 - **Task Groups Affected:** [Which task groups within stories need modification]
-- **Technical Components Affected:** [Code/architecture areas needing updates]  
+- **Technical Components Affected:** [Code/architecture areas needing updates]
 - **Implementation Status:** [How much existing work across stories is affected]
 
 **Migration Strategy:**
@@ -125,11 +114,11 @@ When confident about changes, present a modification contract:
 - **Removed From Scope:** [What gets removed]
 - **Still Out of Scope:** [Unchanged exclusions]
 
-**⚠️ Risks & Concerns:**
+**Risks & Concerns:**
 - [Specific technical or business risks from the changes]
 - [Potential complications or dependencies]
 
-**💡 Recommendations:**
+**Recommendations:**
 - [Suggestions for safer implementation approaches]
 - [Ways to minimize disruption to existing work]
 
@@ -217,74 +206,11 @@ Options:
 - **Combine stories** if task counts become too small
 - **Reorder stories** if dependencies changed
 
-**Story-Level Task Annotations:**
-```markdown
-# In story-1-user-auth.md:
-- [x] 1.1 Write tests for user authentication ✅ (Still valid)
-- [ ] 1.2 Implement OAuth provider ⚠️ (Needs modification)
-- [ ] 1.3 Create social login UI 🆕 (New task from scope change)
-- [~~] 1.4 Implement mobile-specific auth ❌ (Moved to new story-4-mobile-auth.md)
-
-# New story-4-mobile-auth.md created if mobile auth becomes separate feature
-```
-
-**Story Management:**
-- **Split large stories**: If modifications would create >7 tasks, create additional story files
-- **Archive obsolete stories**: Move removed stories to archived/ subfolder with timestamp
-- **Update story dependencies**: Modify README.md to reflect new story relationships
-- **Maintain story cohesion**: Ensure each story delivers standalone user value
-
 #### Step 2.5: Final Update Review & Validation
 
-Present updated package with change summary:
-```
-✅ Specification successfully updated!
+Present updated package with change summary showing files modified, stories added/removed/archived, task groups reorganized, and total task count.
 
-📁 .code-captain/specs/[DATE]-feature-name/
-├── 📋 spec.md - ⭐ Updated specification
-├── 📝 spec-lite.md - ⭐ Updated AI context summary  
-├── 👥 user-stories/ - ⭐ Updated story organization
-│   ├── 📊 README.md - ⭐ Updated progress tracking and dependencies
-│   ├── 📝 story-1-{name}.md - ⭐ Modified stories (5-7 tasks each)
-│   ├── 📝 story-2-{name}.md - 🆕 New stories or combinations
-│   ├── 📂 archived/ - 🗃️ Obsolete stories (if any)
-│   └── 📝 story-N-{name}.md - ⭐ Focused task groups
-├── 📂 sub-specs/
-│   ├── 🔧 technical-spec.md - ⭐ Updated if affected
-│   └── [other sub-specs...]
-├── 💾 backups/[timestamp]/ - Original files and stories preserved
-└── 📝 CHANGELOG.md - ⭐ Change documentation
-
-## Summary of Changes:
-- **Stories Modified:** [X] existing story files updated
-- **Stories Added:** [Y] new story files created
-- **Stories Removed/Archived:** [Z] story files no longer needed
-- **Task Groups Affected:** [N] task groups reorganized
-- **Modified Components:** [List of changed technical components]
-
-## Impact on Implementation:
-- **Stories Still Valid:** [X] out of [Y] stories remain unchanged  
-- **Stories Requiring Rework:** [N] stories need modification
-- **New Stories Added:** [N] new stories created (with focused task groups)
-- **Stories Archived:** [N] stories no longer needed
-- **Total Tasks:** [N] tasks across all stories (max 5-7 per story)
-
-Please review the updated specification:
-- Does this accurately reflect the agreed modifications?
-- Are the user stories appropriately organized (5-7 tasks per story)?
-- Should any stories be further split or combined?
-- Are story dependencies correctly updated in the README?
-- Should any additional changes be made?
-
-The updated user-stories folder structure provides:
-- **Focused development**: Work on one story at a time
-- **Better organization**: Each story file is manageable and self-contained
-- **Team collaboration**: Different stories can be assigned to different developers
-- **Clear progress tracking**: README overview shows status across all stories
-- **Flexible workflow**: Stories can be completed independently where possible
-
-The original version is safely backed up in the backups folder. If you need to rollback any changes, I can help restore from backup.
-```
+The original version is safely backed up in the backups folder. If the user needs to rollback any changes, offer to help restore from backup.
 
 ## Tool Integration
 
@@ -299,98 +225,3 @@ The original version is safely backed up in the backups folder. If you need to r
 - Backup system for safe modification tracking
 - Change logs for audit trail and rollback capability
 - User stories organized in individual files for better management
-
-## Key Features
-
-### 1. Safe Modification Process
-- **Backup creation** before any changes
-- **Change tracking** with detailed logs
-- **Rollback capability** to restore previous versions
-- **Impact assessment** before making changes
-
-### 2. Precise Change Control
-- **Focused clarification** about specific modifications
-- **Risk assessment** for breaking changes
-- **Migration strategy** for existing implementation
-- **Selective updates** only to affected components
-
-### 3. Implementation Continuity
-- **Task status preservation** for completed work
-- **Clear annotation** of what needs rework
-- **Priority reassessment** based on changes
-- **Timeline impact** analysis
-
-### 4. Change Documentation
-- **Detailed change logs** for audit trail
-- **Before/after comparison** capability
-- **Modification rationale** capture
-- **Rollback instructions** for safety
-
-## Example Usage Flow
-
-```
-Developer: /edit-spec "user-auth" "add biometric authentication"
-
-Agent: I found your user authentication specification from 2024-01-15. Let me load the current state...
-
-[Loads spec.md, tasks.md, and sub-specs]
-
-Current specification includes email/password auth with OAuth social login. I see there are 8 user stories, with 3 already implemented in your codebase.
-
-I have a concern about adding biometric authentication: your current implementation is web-focused, but biometric auth typically requires native mobile or desktop apps. I see no mobile components in your existing specification.
-
-First question: Are you planning to add mobile app development to this specification, or do you want to use WebAuthn for browser-based biometric authentication?
-
-Developer: WebAuthn for browser-based
-
-Agent: That makes more sense with your existing web architecture. However, WebAuthn requires HTTPS and has limited browser support. I see your current implementation supports users who may be on older browsers.
-
-Should we make biometric authentication an optional enhancement for supported browsers, or do you want to require it for all users (which might break compatibility)?
-
-Developer: Optional enhancement for supported browsers
-
-Agent: [Continues with more questions about UX, fallback behavior, etc.]
-
-## Modification Contract
-
-**Target Specification:** User Authentication System (2024-01-15)
-
-**Proposed Changes:** Add WebAuthn biometric authentication as optional enhancement
-
-**Change Type:** Addition (with graceful degradation)
-
-**Impact Assessment:**
-- **User Stories Affected:** Story 2 (Login flow) needs biometric option
-- **Technical Components Affected:** Frontend auth component, browser capability detection
-- **Implementation Status:** 3/8 stories completed, none affected by this change
-
-**Migration Strategy:**
-- Existing auth flows remain unchanged
-- Add biometric as progressive enhancement
-- No breaking changes to current implementation
-
-**Updated Success Criteria:** Users can log in with biometrics on supported browsers, fallback to existing methods
-
-**⚠️ Risks & Concerns:**
-- Browser support varies (Chrome 67+, Firefox 60+, Safari 14+)
-- Requires HTTPS in production
-- UX complexity for unsupported browsers
-
-**💡 Recommendations:**
-- Feature detection before offering biometric option
-- Clear messaging when biometric unavailable
-- Analytics to track adoption rates
-
-**Effort Estimate:** ~2-3 additional days (1 story addition, modest technical complexity)
-
----
-Options: [yes/edit/compare/risks/rollback]
-
-Developer: yes
-
-Agent: ✅ Modification contract locked! Updating specification...
-
-[Updates files, creates backups, documents changes]
-```
-
-This approach ensures that specification modifications are as careful and controlled as the original creation process, while preserving existing work and providing safety mechanisms for complex changes.
