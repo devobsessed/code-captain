@@ -108,12 +108,12 @@
       "component": "docs",
       "description": "Global development guidelines for Agent OS projects."
     },
-    "copilot/chatmodes/Code Captain.chatmode.md": {
+    "copilot/agents/Code Captain.agent.md": {
       "hash": "sha256:3d59160be5c586add9f67298064c2591cec354bf4c24251014e101b744f4a41d",
       "size": 2860,
       "lastModified": "2025-09-27T04:57:56.646Z",
       "version": "0.0.9",
-      "component": "chatmodes",
+      "component": "agents",
       "description": "⚓ Awaiting orders..."
     },
     "copilot/prompts/create-adr.prompt.md": {

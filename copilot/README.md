@@ -1,8 +1,8 @@
 # Code Captain for GitHub Copilot + VS Code
 
-> **Classic VS Code with AI-powered chat modes and prompts**
+> **Classic VS Code with AI-powered agents and prompts**
 
-Transform GitHub Copilot Chat into a structured development workflow system with custom chat modes, prompts, and organized documentation.
+Transform GitHub Copilot Chat into a structured development workflow system with custom agents, prompts, and organized documentation.
 
 ## 🚀 Installation
 
@@ -13,7 +13,7 @@ npx @devobsessed/code-captain
 ```
 
 The installer will detect VS Code with Copilot and install to:
-- `.github/chatmodes/` - Code Captain chat mode
+- `.github/agents/` - Code Captain agent
 - `.github/prompts/` - Workflow prompt templates
 - `.code-captain/` - Complete workflow system
 
@@ -21,16 +21,16 @@ The installer will detect VS Code with Copilot and install to:
 
 ```bash
 # Clone or download the copilot/ directory contents to .github/
-cp -r copilot/chatmodes/ .github/chatmodes/
+cp -r copilot/agents/ .github/agents/
 cp -r copilot/prompts/ .github/prompts/
 cp -r .code-captain/ .
 ```
 
 ## 🎯 Command Syntax
 
-Code Captain integrates with Copilot Chat through a custom chat mode. After installation:
+Code Captain integrates with Copilot Chat through a custom agent. After installation:
 
-1. **Select Code Captain chat mode** from the chat mode dropdown
+1. **Select Code Captain agent** from the agent picker
 2. **Use slash commands** directly:
 
 ```bash
@@ -40,12 +40,12 @@ Code Captain integrates with Copilot Chat through a custom chat mode. After inst
 /status
 ```
 
-## 📁 Chat Modes & Prompts
+## 📁 Agents & Prompts
 
-### Chat Mode
-Located in `.github/chatmodes/`:
+### Agent
+Located in `.github/agents/`:
 
-- **Code Captain.chatmode.md** - Automatically available in chat mode selector
+- **Code Captain.agent.md** - Automatically available in agent picker
 
 ### Available Prompts
 Located in `.github/prompts/`:
@@ -66,7 +66,7 @@ Located in `.github/prompts/`:
 
 ### 📋 Analysis & Research
 - **Research Topics**: AI/ML frameworks, database patterns, security approaches
-- **Market Analysis**: Competitive landscapes, feature comparisons  
+- **Market Analysis**: Competitive landscapes, feature comparisons
 - **Technical Evaluation**: Library assessments, architecture reviews
 
 ### ⚙️ Implementation
@@ -78,7 +78,7 @@ Located in `.github/prompts/`:
 
 ### Phase 1: Enhanced Core Features ✅
 1. **Advanced Analysis** - Multi-language support, framework detection
-2. **Rich Specifications** - Visual diagrams, interaction flows, API schemas  
+2. **Rich Specifications** - Visual diagrams, interaction flows, API schemas
 3. **Smart Implementation** - Context-aware code generation, test automation
 
 ### Phase 2: Quality & Collaboration 🚧
@@ -93,10 +93,10 @@ Located in `.github/prompts/`:
 
 ## 🔄 Workflow Examples
 
-### Using the Chat Mode
+### Using the Agent
 
 1. **Open Copilot Chat** in VS Code
-2. **Select "Code Captain"** from the chat mode dropdown
+2. **Select "Code Captain"** from the agent picker
 3. **Type:** `/initialize`
 4. **Follow the prompts** for project analysis
 5. **Review generated files** in `.code-captain/docs/`
@@ -111,7 +111,7 @@ Located in `.github/prompts/`:
 ### Complete Feature Development
 
 ```bash
-# Select "Code Captain" chat mode, then:
+# Select "Code Captain" agent, then:
 
 # 1. Project setup
 /initialize
@@ -138,8 +138,8 @@ Copilot integration creates this structure:
 
 ```
 .github/
-├── chatmodes/
-│   └── Code Captain.chatmode.md
+├── agents/
+│   └── Code Captain.agent.md
 └── prompts/
     ├── create-spec.prompt.md
     ├── create-adr.prompt.md
@@ -163,8 +163,8 @@ Copilot integration creates this structure:
 
 ## 🎯 Copilot-Specific Features
 
-### Custom Chat Modes
-- **Structured workflows** through chat mode activation
+### Custom Agents
+- **Structured workflows** through agent activation
 - **Context-aware responses** based on project state
 - **Guided interactions** with step-by-step processes
 
@@ -175,7 +175,7 @@ Copilot integration creates this structure:
 
 ### Repository Integration
 - **Repository-based configuration** through `.github/` structure
-- **Team collaboration** through shared chat modes and prompts
+- **Team collaboration** through shared agents and prompts
 - **Version-controlled workflows** alongside your codebase
 
 
@@ -190,23 +190,23 @@ Copilot integration creates this structure:
 
 ## 🛠️ Troubleshooting
 
-### Chat Mode Not Available
-**Problem**: Code Captain doesn't appear in chat mode selector  
-**Solution**: Ensure `.github/chatmodes/Code Captain.chatmode.md` exists and restart VS Code
+### Agent Not Available
+**Problem**: Code Captain doesn't appear in agent picker
+**Solution**: Ensure `.github/agents/Code Captain.agent.md` exists and restart VS Code
 
 ### Prompts Don't Work as Expected
-**Problem**: Prompts generate inconsistent results  
+**Problem**: Prompts generate inconsistent results
 **Solution**: Copy the exact prompt text and include all context sections
 
 ### File Generation Issues
-**Problem**: Files aren't created in expected locations  
+**Problem**: Files aren't created in expected locations
 **Solution**: Check `.code-captain/` folder exists and has write permissions
 
 ## 🤝 Contributing
 
 Copilot-specific contributions:
 
-1. **Chat Mode Enhancement** - Improve workflow integration
+1. **Agent Enhancement** - Improve workflow integration
 2. **Prompt Templates** - Add new workflow templates
 3. **Documentation** - Add Copilot-specific examples
 4. **Repository Integration** - Enhance repository templates
@@ -217,4 +217,4 @@ Copilot-specific contributions:
 
 1. **Install:** `npx @devobsessed/code-captain`
 2. **Open:** Copilot Chat in VS Code
-3. **Start:** Select "Code Captain" mode and type `/initialize` 
+3. **Start:** Select "Code Captain" agent and type `/initialize`

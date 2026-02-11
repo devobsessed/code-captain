@@ -39,7 +39,7 @@ class CodeCaptainInstaller {
         name: "Copilot",
         description: "Visual Studio Code with Copilot extension",
         details:
-          "Uses .github/chatmodes/ + .github/prompts/ + .code-captain/docs/",
+          "Uses .github/agents/ + .github/prompts/ + .code-captain/docs/",
       },
       claude: {
         name: "Claude Code",
@@ -125,7 +125,7 @@ class CodeCaptainInstaller {
         ".cursor/rules/cc.mdc",
         ".cursor/rules/",
       ],
-      "Copilot Integration": [".github/chatmodes/", ".github/prompts/"],
+      "Copilot Integration": [".github/agents/", ".github/prompts/"],
       "Claude Integration": [
         ".code-captain/claude/",
         "claude-code/",
@@ -679,7 +679,7 @@ class CodeCaptainInstaller {
       case "copilot":
         return [
           ...baseChoices,
-          { name: "Copilot Chatmodes", value: "chatmodes", checked: true },
+          { name: "Copilot Agents", value: "agents", checked: true },
           { name: "Copilot Prompts", value: "prompts", checked: true },
         ];
 
@@ -897,12 +897,12 @@ class CodeCaptainInstaller {
         break;
 
       case "copilot":
-        // Chatmodes
-        if (includeAll || selectedComponents.includes("chatmodes")) {
+        // Agents
+        if (includeAll || selectedComponents.includes("agents")) {
           files.push({
-            source: "copilot/chatmodes/Code Captain.chatmode.md",
-            target: ".github/chatmodes/Code Captain.chatmode.md",
-            component: "chatmodes",
+            source: "copilot/agents/Code Captain.agent.md",
+            target: ".github/agents/Code Captain.agent.md",
+            component: "agents",
           });
         }
 
@@ -1101,15 +1101,15 @@ class CodeCaptainInstaller {
       case "copilot":
         console.log(
           chalk.blue("1.") +
-            " Restart VS Code to load chatmodes from " +
-            chalk.cyan(".github/chatmodes/")
+            " Restart VS Code to load agents from " +
+            chalk.cyan(".github/agents/")
         );
         console.log(chalk.blue("2.") + " Open Copilot Chat in VS Code");
         console.log(
           chalk.blue("3.") +
-            " Type " +
-            chalk.cyan("@Code Captain") +
-            " to access the chatmode"
+            " Select the " +
+            chalk.cyan("Code Captain") +
+            " agent from the agent picker"
         );
         console.log(
           chalk.blue("4.") +

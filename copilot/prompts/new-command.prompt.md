@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: Code Captain
 ---
 
 # New Command Creator
@@ -47,7 +47,7 @@ Ask clarifying questions to build complete command specification:
 
 ```markdown
 ---
-mode: agent
+agent: Code Captain
 ---
 
 # [Command Name] Command
@@ -183,7 +183,7 @@ COMMAND SPECIFICATION:
 - Workflow Steps: {workflow_phases}
 
 TEMPLATE STRUCTURE:
-1. Frontmatter: mode: agent
+1. Frontmatter: agent: Code Captain
 2. Title: # [Command Name] Command
 3. Overview: Purpose and capabilities
 4. Command Process: Detailed step-by-step workflow

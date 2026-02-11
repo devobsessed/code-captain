@@ -16,7 +16,7 @@ describe("Structure Validation Tests", () => {
         const { data } = await parseMarkdownFile(filePath);
 
         expect(() => validateFrontmatter(data, "copilot")).not.toThrow();
-        expect(data.mode).toBe("agent");
+        expect(data.agent).toBe("Code Captain");
       }
     });
 

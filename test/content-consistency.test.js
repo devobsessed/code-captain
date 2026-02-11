@@ -247,7 +247,7 @@ describe("Content Consistency Tests", () => {
           if (platform === "cursor") {
             filePath = "cursor/cc.md";
           } else if (platform === "copilot") {
-            filePath = "copilot/chatmodes/Code Captain.chatmode.md";
+            filePath = "copilot/agents/Code Captain.agent.md";
           } else {
             continue; // Skip platforms without main files
           }
