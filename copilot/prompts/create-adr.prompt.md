@@ -1,12 +1,13 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Create Architecture Decision Records with research and analysis"
 ---
 
-# Create ADR Command
+# You are executing the Create ADR command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Create comprehensive Architecture Decision Records (ADRs) that systematically document architectural decisions with clear rationale, alternatives considered, and consequences through a structured analysis and review process.
+Your mission: Create a comprehensive Architecture Decision Record (ADR) that documents an architectural decision with clear rationale, alternatives considered, and consequences through a structured analysis and review process.
 
 ## When to Use
 
@@ -20,13 +21,11 @@ Create comprehensive Architecture Decision Records (ADRs) that systematically do
 
 ## Prerequisites
 
-**MANDATORY:** This command **automatically executes research** if no relevant research exists. The ADR creation process will:
+**MANDATORY:** Automatically execute research if no relevant research exists. The ADR creation process will:
 
 1. Check for existing research on the decision topic
 2. If no research found: **automatically read and execute** the complete research workflow from `/research`
 3. Only proceed with ADR creation after research is completed and documented
-
-## Command Process
 
 ### Step 0: Check for Existing Research and Auto-Execute if Missing
 
@@ -44,11 +43,11 @@ Create comprehensive Architecture Decision Records (ADRs) that systematically do
 
    ```
    If no relevant research found:
-   "❌ No existing research found for this architectural decision.
+   "No existing research found for this architectural decision.
 
    Architecture Decision Records require comprehensive research to document alternatives properly.
 
-   🔄 AUTOMATICALLY EXECUTING RESEARCH WORKFLOW FIRST...
+   AUTOMATICALLY EXECUTING RESEARCH WORKFLOW FIRST...
 
    Reading research workflow and executing complete research process..."
    ```
@@ -134,7 +133,7 @@ Create comprehensive Architecture Decision Records (ADRs) that systematically do
 
 ### Step 3: Research Alternatives and Evaluate Options
 
-**Objective:** Systematically research and evaluate alternative approaches to the architectural decision
+**Objective:** Systematically research and evaluate alternative approaches
 
 **Research Actions:**
 
@@ -241,58 +240,49 @@ Create markdown file: `.code-captain/decision-records/NNNN-decision-title.md` us
 
 ## Considered Options
 
-### Option 1: [Name of option, e.g., "Maintain Current Monolithic Architecture"]
+### Option 1: [Name of option]
 
 **Description:** [Brief description of this approach]
 
 **Pros:**
-
 - [Positive aspect 1]
 - [Positive aspect 2]
 
 **Cons:**
-
 - [Negative aspect 1]
 - [Negative aspect 2]
 
 **Effort:** [Implementation effort assessment]
-
 **Risk:** [Risk level and key risks]
 
-### Option 2: [Name of option, e.g., "Migrate to Microservices Architecture"]
+### Option 2: [Name of option]
 
 **Description:** [Brief description of this approach]
 
 **Pros:**
-
 - [Positive aspect 1]
 - [Positive aspect 2]
 
 **Cons:**
-
 - [Negative aspect 1]
 - [Negative aspect 2]
 
 **Effort:** [Implementation effort assessment]
-
 **Risk:** [Risk level and key risks]
 
-### Option 3: [Name of option, e.g., "Hybrid Modular Monolith Approach"]
+### Option 3: [Name of option]
 
 **Description:** [Brief description of this approach]
 
 **Pros:**
-
 - [Positive aspect 1]
 - [Positive aspect 2]
 
 **Cons:**
-
 - [Negative aspect 1]
 - [Negative aspect 2]
 
 **Effort:** [Implementation effort assessment]
-
 **Risk:** [Risk level and key risks]
 
 ## Decision Outcome
@@ -311,15 +301,15 @@ Create markdown file: `.code-captain/decision-records/NNNN-decision-title.md` us
 
 ### Positive Consequences
 
-- [Positive outcome 1 - what improvements this decision enables]
-- [Positive outcome 2 - what capabilities this decision provides]
-- [Positive outcome 3 - what risks this decision mitigates]
+- [Positive outcome 1]
+- [Positive outcome 2]
+- [Positive outcome 3]
 
 ### Negative Consequences
 
-- [Negative outcome 1 - what complexities this decision introduces]
-- [Negative outcome 2 - what trade-offs this decision requires]
-- [Negative outcome 3 - what new risks this decision creates]
+- [Negative outcome 1]
+- [Negative outcome 2]
+- [Negative outcome 3]
 
 ### Mitigation Strategies
 
@@ -355,8 +345,6 @@ Create markdown file: `.code-captain/decision-records/NNNN-decision-title.md` us
 - [Link to related ADRs]
 - [Prior research documents from .code-captain/research/ (if applicable)]
 - [External documentation, articles, or research]
-- [Code repositories or examples]
-- [Meeting notes or discussion records]
 
 ## Related Decisions
 
@@ -392,79 +380,3 @@ Create markdown file: `.code-captain/decision-records/NNNN-decision-title.md` us
 - ADRs stored in `.code-captain/decision-records/`
 - Research documents in `.code-captain/research/`
 - Sequential numbering for easy reference
-
-## Best Practices
-
-### Decision Scope and Focus
-
-- Focus on one significant architectural decision per ADR
-- Clearly separate the problem from potential solutions
-- Include sufficient context for future readers to understand the decision
-- Document the decision even if it seems obvious at the time
-- Consider both technical and business implications
-
-### Alternatives Analysis
-
-- Always include the "do nothing" or "status quo" option
-- Research industry standards and best practices
-- Consider both short-term and long-term implications
-- Include effort and risk assessments for each option
-- Seek diverse perspectives and expert opinions
-
-### Decision Documentation
-
-- Use clear, jargon-free language that new team members can understand
-- Include relevant diagrams, code examples, or architectural sketches
-- Reference external sources and supporting documentation
-- Document both positive and negative consequences honestly
-- Plan for decision review and potential revision
-
-### Stakeholder Engagement
-
-- Involve all teams affected by the architectural decision
-- Allow time for thoughtful review and feedback
-- Document dissenting opinions and how they were addressed
-- Ensure decision makers have sufficient context and time
-- Follow up on implementation and measure success
-
-### ADR Management
-
-- Maintain sequential numbering for easy reference
-- Store ADRs in version control alongside code
-- Link related ADRs to show decision evolution
-- Update status when decisions are superseded or deprecated
-- Regular review of ADR effectiveness and team satisfaction
-
-## Common Pitfalls to Avoid
-
-### Decision Process Issues
-
-- Rushing to document a decision without proper analysis
-- Making decisions in isolation without stakeholder input
-- Failing to research alternative approaches thoroughly
-- Not considering long-term consequences and evolution
-- Avoiding difficult trade-off discussions
-
-### Documentation Problems
-
-- Writing ADRs that are too technical for business stakeholders
-- Failing to include sufficient context for future understanding
-- Not updating ADR status when decisions change
-- Creating ADRs for trivial decisions that don't warrant documentation
-- Writing overly long ADRs that obscure the key decision
-
-### Team and Process Challenges
-
-- Not establishing clear decision-making authority
-- Failing to follow up on implementation and monitoring
-- Creating ADRs after decisions are already implemented
-- Not linking ADRs to related architectural documentation
-- Ignoring dissenting opinions without proper consideration
-
-### Maintenance and Evolution
-
-- Letting ADRs become stale or outdated
-- Not reviewing and learning from past decisions
-- Failing to update related ADRs when superseding decisions
-- Not considering the cumulative effect of multiple ADRs
-- Avoiding difficult conversations about failed decisions

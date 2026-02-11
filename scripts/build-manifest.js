@@ -32,6 +32,7 @@ class ManifestBuilder {
       "cursor/docs/*.md": { component: "docs" },
 
       // Copilot files
+      "copilot/copilot-instructions.md": { component: "instructions" },
       "copilot/agents/*.md": { component: "agents" },
       "copilot/prompts/*.md": { component: "prompts" },
       "copilot/docs/*.md": { component: "docs" },

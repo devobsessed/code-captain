@@ -1,28 +1,24 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Execute implementation tasks using TDD from specifications"
 ---
 
-# Execute Task Command
+# You are executing the Execute Task command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Execute a specific task and its sub-tasks systematically following a Test-Driven Development (TDD) workflow. This command reads task specifications from `.code-captain/specs/` directories and implements features with comprehensive testing, following established code standards and best practices.
-
-**Note:** This command automatically detects and lists available task specifications for selection, or executes a specific task if context is clear.
+Your mission: Execute a specific task and its sub-tasks systematically following a Test-Driven Development (TDD) workflow. Read task specifications from `.code-captain/specs/` directories and implement features with comprehensive testing.
 
 ## CRITICAL REQUIREMENT: 100% Test Pass Rate
 
-**⚠️ ZERO TOLERANCE FOR FAILING TESTS ⚠️**
+**ZERO TOLERANCE FOR FAILING TESTS**
 
-This command enforces strict test validation:
 - **NO story can be marked "COMPLETED" with ANY failing tests**
 - **100% test pass rate is MANDATORY before completion**
 - **"Edge case" or "minor" test failures are NOT acceptable**
 - **Implementation is considered incomplete until all tests pass**
 
 If tests fail, the story remains "IN PROGRESS" until all failures are resolved.
-
-## Command Process
 
 ### Step 1: Task Discovery & Selection
 
@@ -110,7 +106,7 @@ For each implementation task within the story:
 4. **Validate all acceptance criteria are met for the user story**
 5. **Confirm story delivers the specified user value**
 
-**⚠️ STORY CANNOT BE MARKED COMPLETE WITH ANY FAILING TESTS ⚠️**
+**STORY CANNOT BE MARKED COMPLETE WITH ANY FAILING TESTS**
 
 ### Step 5: Story Completion & Status Updates
 
@@ -131,14 +127,3 @@ Update story file status and progress tracking files with completion details, en
 - File-based progress tracking in `.code-captain/current-task-progress.md`
 - Story status updates in specification files
 - Test execution results documentation
-
-## Quality Standards
-
-**Test-Driven Development:**
-- Tests written before implementation
-- **100% test pass rate MANDATORY before task completion**
-- **ZERO TOLERANCE for failing tests - no story completion with any failures**
-- Comprehensive coverage including edge cases
-- Regression testing for existing functionality
-
-This command ensures systematic, test-driven implementation with proper documentation and progress tracking using file-based systems compatible with GitHub Copilot.

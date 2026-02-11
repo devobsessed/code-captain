@@ -1,14 +1,13 @@
 ---
-agent: Code Captain
+agent: agent
+description: "Analyze and set up project foundation with documentation"
 ---
 
-# Initialize Command
+# You are executing the Initialize command.
 
-## Overview
+You MUST follow these instructions exactly. Do NOT describe this process — execute it.
 
-Analyze and set up technical foundation for either greenfield (new) or brownfield (existing) projects. This command intelligently detects project type, scans the codebase, and generates foundational documentation including technology stack analysis, code style guide, and architectural overview.
-
-## Command Process
+Your mission: Analyze the current project and set up the technical foundation. Detect whether this is a greenfield (new) or brownfield (existing) project, scan the codebase, and generate foundational documentation.
 
 ### Step 1: Project Type Detection
 
@@ -35,10 +34,10 @@ Analyze and set up technical foundation for either greenfield (new) or brownfiel
 
 Generate foundational documents in `.code-captain/docs/`:
 
-**tech-stack.md** - Complete technology inventory and analysis
-**code-style.md** - Observed patterns and coding conventions  
-**objective.md** - Inferred or defined project purpose and goals
-**architecture.md** - System architecture overview and decisions
+- **tech-stack.md** - Complete technology inventory and analysis
+- **code-style.md** - Observed patterns and coding conventions
+- **objective.md** - Inferred or defined project purpose and goals
+- **architecture.md** - System architecture overview and decisions
 
 ### Step 4: Next Steps Recommendation
 
@@ -61,5 +60,3 @@ Provide clear guidance on next steps, typically:
 **Documentation organization:**
 - Progress documented in `.code-captain/initialization-progress.md`
 - Results organized in `.code-captain/docs/` folder
-
-This command provides comprehensive project analysis and setup using GitHub Copilot's native capabilities.
