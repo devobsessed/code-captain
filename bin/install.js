@@ -867,6 +867,9 @@ class CodeCaptainInstaller {
     let templateContent;
     if (this.config.localSource) {
       const localPath = path.join(this.config.localSource, templateSource);
+      if (!(await fs.pathExists(localPath))) {
+        throw new Error(`Template not found: ${localPath}`);
+      }
       templateContent = await fs.readFile(localPath, "utf8");
     } else {
       const url = `${this.config.baseUrl}/${templateSource}`;
@@ -918,6 +921,11 @@ class CodeCaptainInstaller {
 
     // Case 2: File exists, no Code Captain content — inject before </Project>
     await fs.copy(targetPath, `${targetPath}.backup`);
+    if (!existingContent.includes("</Project>")) {
+      throw new Error(
+        "Directory.Build.props is malformed (missing </Project>). Please fix manually."
+      );
+    }
     const injectedContent = existingContent.replace(
       /<\/Project>/,
       `\n${itemGroupBlock}\n</Project>`
