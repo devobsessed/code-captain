@@ -36,6 +36,10 @@ class ManifestBuilder {
       "copilot/agents/*.md": { component: "agents" },
       "copilot/prompts/*.md": { component: "prompts" },
       "copilot/docs/*.md": { component: "docs" },
+      "copilot/Directory.Build.props": {
+        component: "vs-solution",
+        description: "MSBuild props for VS Solution Explorer visibility",
+      },
 
       // Claude files
       "claude-code/agents/*.md": { component: "agents" },
