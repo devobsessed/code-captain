@@ -63,9 +63,9 @@ describe("Command Availability Smoke Tests", () => {
       expect(await fileExists("cursor/cc.mdc")).toBe(true);
     });
 
-    test("copilot has chatmode file", async () => {
+    test("copilot has agent file", async () => {
       expect(
-        await fileExists("copilot/chatmodes/Code Captain.chatmode.md")
+        await fileExists("copilot/agents/Code Captain.agent.md")
       ).toBe(true);
     });
   });

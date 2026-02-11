@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: Code Captain
 ---
 
 # Initialize Command

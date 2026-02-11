@@ -97,8 +97,8 @@ All platforms should support these core commands:
 ### GitHub Copilot
 
 - Files: `copilot/prompts/*.prompt.md`
-- Frontmatter: `mode: agent`
-- Chatmode: `copilot/chatmodes/Code Captain.chatmode.md`
+- Frontmatter: `agent: Code Captain`
+- Agent: `copilot/agents/Code Captain.agent.md`
 - Syntax: `/command-name`
 - Tools: `codebase`, `editFiles`, `search`
 

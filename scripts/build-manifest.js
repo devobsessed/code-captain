@@ -32,7 +32,7 @@ class ManifestBuilder {
       "cursor/docs/*.md": { component: "docs" },
 
       // Copilot files
-      "copilot/chatmodes/*.md": { component: "chatmodes" },
+      "copilot/agents/*.md": { component: "agents" },
       "copilot/prompts/*.md": { component: "prompts" },
       "copilot/docs/*.md": { component: "docs" },
 

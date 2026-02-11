@@ -131,7 +131,7 @@ describe("Integration Tests", () => {
     test("each platform has required installation files", async () => {
       const installationRequirements = {
         cursor: [".cursor/rules/cc.mdc"],
-        copilot: [".github/chatmodes/", ".github/prompts/"],
+        copilot: [".github/agents/", ".github/prompts/"],
         claude: [".claude/agents/", ".claude/commands/"],
       };
 

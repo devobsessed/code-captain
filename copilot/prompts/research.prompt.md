@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: Code Captain
 ---
 
 # Research Command
