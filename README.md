@@ -54,7 +54,7 @@ _AI-first development with built-in agent system_
 
 _Classic VS Code with Copilot Chat integration_
 
-- Custom chat modes and prompts
+- Custom agents and prompts
 - `.github/` repository integration
 - Team collaboration features
 - **→ [Copilot Setup Guide](copilot/README.md)**
