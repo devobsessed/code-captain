@@ -44,12 +44,19 @@ Create `.code-captain/current-task-progress.md` to track the execution process:
 ## Progress Steps:
 - [x] Task discovery and selection
 - [ ] Context gathering from specs and codebase
+- [ ] Project structure & infrastructure verification
 - [ ] Subtask execution in TDD order
 - [ ] Test verification (100% pass rate required)
 - [ ] Task completion and status update
 
 ## Current Step: Task Discovery
 ```
+
+**Progress tracker update triggers:**
+- Update after completing each numbered sub-task
+- Update when encountering unexpected prerequisite work (e.g., "Added test framework setup — not in original task list")
+- Record test run results with pass/fail counts after each test execution
+- Update the "Current Step" indicator as you move through phases
 
 ### Step 2: Context Gathering & Analysis
 
@@ -70,6 +77,51 @@ Use `codebase` and `search` to understand:
 - Integration points for new features
 - Testing frameworks and conventions
 
+### Step 2.5: Project Structure & Infrastructure Verification
+
+Before writing any code or tests, verify the project environment.
+
+**Check existing project documentation:**
+
+- If `.code-captain/docs/tech-stack.md` exists and contains project topology and test infrastructure status, use it rather than re-detecting from scratch
+- Only perform fresh detection if `tech-stack.md` is missing or stale
+
+**Detect project structure:**
+
+1. Search for `*.sln` files at the repository root
+2. If a solution file exists:
+   - Identify project subdirectories (client, server, shared, etc.)
+   - Determine which subdirectory contains the implementation target
+   - Note the repo root path — all `.code-captain/` references are relative to root
+3. If no solution file exists, treat the workspace root as the project root
+
+**Verify test infrastructure:**
+
+1. Check `package.json` (in the target directory) for a `test` script and test-related `devDependencies`
+2. If NO test framework exists:
+   - Select a test runner aligned with the project's build tool (e.g., Vitest for Vite, Jest for Webpack/CRA)
+   - Install minimum required packages (test runner, DOM environment, assertion matchers)
+   - Configure the test runner in the project's existing config file
+   - Create a setup file if needed (e.g., for jest-dom matchers)
+   - Add a `test` script to `package.json`
+   - Run a trivial smoke test to confirm the framework works before writing real tests
+3. If a test framework exists, verify it runs successfully with any existing tests
+4. Document test infrastructure additions in the progress tracker
+
+**Select test strategies (based on project stack):**
+
+For JavaScript/TypeScript projects:
+- **Component behavior tests**: Use the project's testing library (e.g., React Testing Library with `render`, `screen`, `fireEvent`) for rendered output and interactions
+- **Static file content tests** (CSS variables, import assertions, file structure): Use Node.js `fs.readFileSync` to read source files as text — do NOT use `fetch()` which is unavailable or incomplete in test DOM environments (jsdom does not support `fetch` for `file://` URLs)
+- **Integration tests**: Use the test runner's DOM environment for full component mounting
+
+For .NET projects:
+- Use the project's existing test framework (xUnit, NUnit, MSTest)
+- Run tests with `dotnet test` (already non-interactive)
+
+For other stacks:
+- Align test strategy with the framework and conventions detected in `tech-stack.md` or discovered during infrastructure verification
+
 ### Step 3: Story & Task Analysis
 
 Parse selected story structure and validate TDD approach within story using file-based progress tracking instead of todo_write.
@@ -84,7 +136,16 @@ Execute story tasks in sequential order with file-based tracking:
 - Write comprehensive test cases for the entire feature
 - Include unit tests, integration tests, and edge cases
 - Cover happy path, error conditions, and boundary cases
-- Ensure tests fail appropriately (red phase)
+- Use the appropriate test strategy from Step 2.5 (component tests vs static file tests vs integration tests)
+
+**Red Phase Verification (mandatory before proceeding to green phase):**
+1. Run the test suite after writing tests
+2. Confirm tests produce **assertion failures** (e.g., "expected X but received Y") — not runtime errors or crashes
+3. If tests error/crash instead of failing (e.g., `TypeError`, `fetch failed`, `Module not found`):
+   - This means the test infrastructure or test approach is broken, not the feature code
+   - Fix the test setup or rewrite the test approach
+   - Re-run until tests fail cleanly with assertion messages
+4. Only proceed to the green phase once all tests fail with clear assertion errors
 
 #### Tasks 2-N: Implementation (Green Phase)
 
@@ -118,12 +179,18 @@ Update story file status and progress tracking files with completion details, en
 - `codebase` - Understanding existing architecture and patterns
 - `search` - Finding related code and patterns
 - `editFiles` - Implementing code changes
-- `runCommands` - Executing build processes
+- `runCommands` - Executing build processes (follow Terminal Command Standards from system instructions)
 - `runTests` - Running test suites
 - `findTestFiles` - Locating test files
 - `testFailure` - Analyzing test failures
 
+**Terminal discipline (see system instructions for full standards):**
+- Always use non-interactive, single-run flags for test runners (e.g., `vitest run`, `jest --ci`)
+- Never start dev servers or watch-mode processes — they block the chat session
+- When running commands in subdirectories, use `cd <subdir> && <command>` to preserve cwd
+- Verify `npm test` script contents before using it — scripts may invoke watch mode
+
 **Progress tracking:**
 - File-based progress tracking in `.code-captain/current-task-progress.md`
 - Story status updates in specification files
-- Test execution results documentation
+- Test execution results documentation with pass/fail counts

@@ -53,6 +53,28 @@ All Code Captain output is organized under `.code-captain/`:
 ### Meta
 - `new-command` - Create new Code Captain commands following established patterns
 
+## Terminal Command Standards
+
+When executing terminal commands via `runCommands`:
+
+1. **Non-interactive only** — Never run commands that require user input or enter watch/interactive mode
+   - Vitest: `npx vitest run` (never bare `npx vitest` which enters watch mode)
+   - Jest: `npx jest --ci`
+   - dotnet: `dotnet test` (already non-interactive)
+2. **No long-running processes** — Never start dev servers, file watchers, or background services through `runCommands`. They will block the chat session indefinitely.
+3. **CWD preservation** — Use single-expression commands when working in subdirectories: `cd <subdir> && <command>`. Never leave the terminal in a shifted working directory. All `.code-captain/` paths are relative to the repository root.
+4. **Quick verification** — Prefer non-blocking checks over full builds. Use `--dry-run`, `--no-restore`, or type-check-only flags when assessing project health.
+5. **Verify before using npm scripts** — If a `package.json` `test` or `build` script exists, check its contents before running it. Scripts may invoke watch mode or dev servers.
+
+## Monorepo & Solution Awareness
+
+Projects may contain multiple sub-projects (e.g., .NET solutions with React frontends). When working in these projects:
+
+1. **Detect project topology early** — Look for `.sln` files, multiple `package.json` files, or workspace configurations (`pnpm-workspace.yaml`, `lerna.json`, `nx.json`). This tells you the project has subdirectories with independent tooling.
+2. **Identify the target subdirectory** — Determine which sub-project contains the code relevant to the current task. Note its path relative to the repo root.
+3. **Root-relative file references** — All `.code-captain/` paths (specs, progress trackers, docs) are relative to the repository root, not any subdirectory. After running commands in a subdirectory, verify the working directory before referencing `.code-captain/` paths.
+4. **Subdirectory-specific tooling** — Each sub-project may have its own `package.json`, test runner, build tool, and configuration. Don't assume the root-level tooling applies to subdirectories.
+
 ## Behavioral Rules
 
 - **Challenge ideas** - If a requirement seems technically infeasible, the scope is too large, or the approach conflicts with existing patterns, say so directly. Suggest alternatives.

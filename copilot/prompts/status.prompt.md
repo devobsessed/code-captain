@@ -28,6 +28,8 @@ Your mission: Provide the developer with a comprehensive status report. Analyze 
 **Code Captain Integration:**
 - Scan `.code-captain/specs/` for active specifications
 - Parse current task progress from most recent spec's user-stories/
+- Check `.code-captain/current-task-progress.md` for in-flight execution state
+- Check `.code-captain/initialization-progress.md` for initialization status
 - Identify completed vs pending tasks
 - Determine current user story context
 
@@ -38,16 +40,26 @@ Your mission: Provide the developer with a comprehensive status report. Analyze 
 
 ### Step 3: Project Health Check
 
-**Basic Viability:**
-- Can the project build/compile? (language-specific checks)
-- Are core services startable?
-- Any obvious configuration issues?
-- Dependencies status (package.json, requirements.txt, etc.)
+**IMPORTANT: Use passive, non-blocking checks only. Do NOT run builds, start services, or execute long-running commands.**
+
+**Basic Viability (file-based heuristics):**
+- Check for build artifacts (e.g., `dist/`, `build/`, `bin/`, `obj/`) — presence suggests a recent successful build
+- Check lock file freshness (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`) — staleness may indicate missing dependencies
+- Check for TypeScript errors via `problems` tool if available
+- Verify key configuration files exist (`.env`, `appsettings.json`, etc.)
+- Check `node_modules/` existence — missing suggests `npm install` is needed
+- For .NET projects: check for `*.csproj` build errors via `problems` tool, not `dotnet build`
+
+**Do NOT run these commands during status checks:**
+- `npm run build`, `dotnet build`, or any full compilation
+- `npm start`, `dotnet run`, or any dev server startup
+- `npm test` or `dotnet test` — report test infrastructure status from file inspection only
 
 **Immediate Blockers:**
 - Merge conflicts that need resolution
-- Missing environment variables or config files
-- Failed builds or critical errors
+- Missing environment variables or config files (check for `.env.example` without corresponding `.env`)
+- Missing `node_modules/` or other dependency directories
+- Stale lock files suggesting dependency drift
 
 ### Step 4: Output the Status Report
 
@@ -97,7 +109,7 @@ QUICK COMMANDS
 **Primary tools:**
 - `codebase` - Analyzing project structure and Code Captain specs
 - `search` - Finding active specifications and related documentation
-- `runCommands` - Git commands and system health checks
+- `runCommands` - Git commands only (follow Terminal Command Standards from system instructions — no builds, no dev servers)
 - `problems` - Identifying project health issues and conflicts
 - `changes` - Tracking recent modifications and activity
 
