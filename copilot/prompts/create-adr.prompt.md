@@ -21,53 +21,51 @@ Your mission: Create a comprehensive Architecture Decision Record (ADR) that doc
 
 ## Prerequisites
 
-**MANDATORY:** Automatically execute research if no relevant research exists. The ADR creation process will:
+**MANDATORY:** Ensure research context exists before creating the ADR. The process will:
 
-1. Check for existing research on the decision topic
-2. If no research found: **automatically read and execute** the complete research workflow from `/research`
+1. Check for existing research on the decision topic in `.code-captain/research/`
+2. If no research found: conduct targeted inline research as part of Step 0
 3. Only proceed with ADR creation after research is completed and documented
 
-### Step 0: Check for Existing Research and Auto-Execute if Missing
+### Step 0: Research Verification & Targeted Research
 
-**Objective:** Ensure comprehensive research exists before creating ADR - automatically execute research if missing
+**Objective:** Ensure sufficient research context exists before creating the ADR
 
 **Actions:**
 
 1. **Check for existing research:**
-
    - Use `search` to look for related research in `.code-captain/research/` directory
-   - Search for research documents that might relate to the architectural decision
+   - Search for research documents that relate to the architectural decision topic
    - Use `codebase` to explore the research directory structure
 
-2. **Automatic research execution if missing:**
+2. **If relevant research exists:**
+   - Load and summarize key findings
+   - Identify any gaps that need additional investigation for the ADR
+   - Proceed to Step 1 with research context loaded
 
-   ```
-   If no relevant research found:
-   "No existing research found for this architectural decision.
+3. **If NO relevant research exists — conduct targeted ADR research inline:**
 
-   Architecture Decision Records require comprehensive research to document alternatives properly.
+   Perform focused research specific to the architectural decision (do NOT attempt to invoke the `/research` command as a sub-prompt):
 
-   AUTOMATICALLY EXECUTING RESEARCH WORKFLOW FIRST...
+   a. **Define the decision scope** — What specific architectural question needs answering?
+   b. **Gather alternatives** — Use `fetch` to research 2-4 approaches:
+      - "[technology/pattern] architectural approaches"
+      - "[option A] vs [option B] comparison"
+      - "[technology] production experience case study"
+   c. **Evaluate against project context** — Use `codebase` to understand how each alternative fits the current architecture
+   d. **Document findings** — Get the current date using `npx @devobsessed/code-captain date`, then create a research document in `.code-captain/research/[DATE]-[topic]-research.md` with key findings, pros/cons, and sources
 
-   Reading research workflow and executing complete research process..."
-   ```
-
-3. **Execute research workflow automatically:**
-
-   - **IMMEDIATELY** execute the complete `/research` command
-   - **CREATE** research document in `.code-captain/research/{date}-{topic}-research.md`
-   - **ONLY CONTINUE** with ADR creation after research is completed
-
-4. **Handle research workflow:**
-   - If no research found: **AUTOMATICALLY execute complete research workflow first**
-   - If existing research found: Load and reference it throughout the ADR process
-   - If research is incomplete: Execute additional research before continuing
+4. **Progress checkpoint:**
+   Before proceeding to Step 1, confirm:
+   - Research document exists and is referenced
+   - At least 2 alternatives have been identified with pros/cons
+   - Project-specific implications have been assessed
 
 **Deliverables:**
 
 - Research availability assessment
-- **Completed research documentation** (auto-executed if missing)
-- Research document ready for ADR reference
+- Research document (loaded from existing or created inline)
+- Summary of key findings ready for ADR reference
 
 ### Step 1: Analyze Decision Context and Current State
 

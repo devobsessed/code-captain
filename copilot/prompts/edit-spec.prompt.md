@@ -141,6 +141,9 @@ Options:
 #### Step 2.1: Create Backup & Change Documentation
 
 **Backup Process:**
+
+**IMPORTANT:** Use repo-root-relative paths for all backup operations. If working in a monorepo or solution with subdirectories, ensure all `.code-captain/` paths reference the repository root, not the current working directory. Use `editFiles` for file creation rather than `runCommands` with `cp` when possible to avoid cwd drift.
+
 1. **CREATE** backup folder: `.code-captain/specs/[spec-folder]/backups/`
 2. **COPY** all current files to `backups/[timestamp]/`
 3. **CREATE** change log entry in `CHANGELOG.md` within spec folder
