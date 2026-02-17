@@ -21,7 +21,7 @@ Before starting, verify these foundational files exist in `.code-captain/docs/`:
 
 If **ANY** of these files are missing, inform the user before proceeding:
 
-```
+```text
 I notice this project hasn't been fully initialized — the foundational docs
 (tech-stack, code-style, objective) are missing from .code-captain/docs/.
 Running /initialize first will produce better specification results because
@@ -109,7 +109,7 @@ When confident, present a contract proposal with any concerns surfaced:
 
 **Format:**
 
-```
+```text
 ## Specification Contract
 
 **Deliverable:** [One clear sentence describing what will be built]
@@ -161,7 +161,7 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 
 **Generated folder (using determined date):**
 
-```
+```text
 .code-captain/specs/[DATE]-{feature-name}/
 ├── spec.md                    # Main specification (from contract)
 ├── spec-lite.md              # Condensed version for AI context
@@ -302,7 +302,7 @@ Each user story gets its own file for better organization. Keep implementation t
 
 Present complete package with file references:
 
-```
+```text
 Specification package created successfully!
 
 .code-captain/specs/[DATE]-feature-name/
@@ -362,7 +362,7 @@ Once you're satisfied with the specification, you can start implementation using
 
 ## Example of expected interaction
 
-```
+```text
 Developer: /create-spec "real-time multiplayer chat with blockchain integration"
 
 Agent: I'm ready to help you create a comprehensive specification.
