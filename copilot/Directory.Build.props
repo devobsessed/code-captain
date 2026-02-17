@@ -1,8 +1,10 @@
 <Project>
-  <!-- Code Captain: Make .github/ Copilot files visible in VS Solution Explorer -->
+  <!-- Code Captain: Make Copilot and Code Captain files visible in VS Solution Explorer -->
   <ItemGroup Label="Code Captain">
     <None Include=".github\copilot-instructions.md" Link="Code Captain\copilot-instructions.md" />
     <None Include=".github\agents\**\*" Link="Code Captain\agents\%(RecursiveDir)%(Filename)%(Extension)" />
     <None Include=".github\prompts\**\*" Link="Code Captain\prompts\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include=".code-captain\docs\**\*" Link="Code Captain\docs\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include=".code-captain\specs\**\*" Link="Code Captain\specs\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

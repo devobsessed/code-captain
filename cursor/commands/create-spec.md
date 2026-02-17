@@ -12,12 +12,36 @@ Generate comprehensive feature specifications using a contract-first approach th
 
 > Your goal is to turn my rough feature idea into a very clear work specification. You will deliver the complete spec package only after we both agree on the requirements contract. **Important: Challenge ideas that don't make technical or business sense - it's better to surface concerns early than build the wrong thing.**
 
+#### Step 1.0: Pre-flight Check
+
+Before starting, verify these foundational files exist in `.code-captain/docs/`:
+
+- `tech-stack.md`
+- `code-style.md`
+- `objective.md`
+
+If **ANY** of these files are missing, inform the user before proceeding:
+
+```text
+I notice this project hasn't been fully initialized — the foundational docs
+(tech-stack, code-style, objective) are missing from .code-captain/docs/.
+Running /initialize first will produce better specification results because
+I'll have your project's architecture, conventions, and patterns as context.
+
+Would you like to:
+1. Switch to /initialize now (recommended)
+2. Continue with /create-spec without the foundational context
+```
+
+If the user chooses option 2, proceed but note that pattern detection will rely entirely on live codebase scanning rather than pre-analyzed documentation.
+
 #### Step 1.1: Initial Context Scan
 
 - Scan existing `.code-captain/specs/` for related specifications
 - Analyze current codebase architecture and patterns using `codebase_search`
-- Load project context files (`tech-stack.md`, `code-style.md`, `objective.md`)
-- **Output:** Context summary (no files created yet)
+- Load project context files if they exist (`tech-stack.md`, `code-style.md`, `objective.md`)
+- **Identify existing codebase patterns** — Catalog naming conventions, project structure patterns, architectural layers (e.g., repository/service/controller), dependency injection patterns, and any established conventions. These become automatic constraints for the specification.
+- **Output:** Context summary including detected patterns (no files created yet)
 
 #### Step 1.2: Gap Analysis & Silent Enumeration
 
@@ -86,7 +110,7 @@ When confident, present a contract proposal with any concerns surfaced:
 
 **Format:**
 
-```
+```text
 ## Specification Contract
 
 **Deliverable:** [One clear sentence describing what will be built]
@@ -104,6 +128,11 @@ When confident, present a contract proposal with any concerns surfaced:
 **⚠️ Technical Concerns (if any):**
 - [Specific concern about feasibility, performance, or architecture]
 - [Suggested alternative or mitigation approach]
+
+**Existing Patterns to Follow:**
+- [Patterns detected from codebase scan or code-style.md — e.g., repository pattern, service layer, naming conventions]
+- [Architectural layers and their relationships]
+- [Any relevant conventions that new code must adhere to]
 
 **💡 Recommendations:**
 - [Suggestions for improving the approach based on codebase analysis]
@@ -124,7 +153,7 @@ Options:
 
 #### Step 2.1: Initialize Tracking
 
-```bash
+```text
 # Use todo_write to track creation process
 1. Get current date and create spec folder structure
 2. Generate core specification document
@@ -145,7 +174,7 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 
 **Generated folder (using determined date):**
 
-```
+```text
 .code-captain/specs/[DATE]-{feature-name}/
 ├── spec.md                    # Main specification (from contract)
 ├── spec-lite.md              # Condensed version for AI context
@@ -311,7 +340,7 @@ This returns the current date in `YYYY-MM-DD` format for folder naming:
 
 Present complete package with file references:
 
-```
+```text
 ✅ Specification package created successfully!
 
 📁 .code-captain/specs/[DATE]-feature-name/
@@ -347,8 +376,18 @@ The user-stories folder structure allows you to:
 - Assign different stories to different team members
 - Keep task lists manageable and actionable
 
-Once you're satisfied with the specification, I can help you start implementation with the first story, or we can make any needed adjustments.
+Once you're satisfied with the specification, you can start implementation using /execute-task, or we can make any needed adjustments.
 ```
+
+## CRITICAL: Command Boundary — STOP HERE
+
+**This command ENDS after presenting the spec package review above.**
+
+- **DO NOT** proceed to implement any code from the stories.
+- **DO NOT** begin executing tasks, writing tests, or making code changes.
+- **DO NOT** offer to "get started on the first story" and then begin coding.
+- Your ONLY job is to create the specification documents. Implementation is handled by the `/execute-task` command.
+- After presenting the final review, **STOP and wait for the user's response.**
 
 ## Key Improvements Over Original
 
@@ -379,7 +418,7 @@ Once you're satisfied with the specification, I can help you start implementatio
 
 ## Example Usage Flow
 
-```
+```text
 Developer: /create-spec "real-time multiplayer chat with blockchain integration"
 
 Agent: I'm ready to help you create a comprehensive specification.

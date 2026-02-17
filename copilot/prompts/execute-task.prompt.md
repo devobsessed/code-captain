@@ -169,6 +169,17 @@ For each implementation task within the story:
 
 **STORY CANNOT BE MARKED COMPLETE WITH ANY FAILING TESTS**
 
+### CRITICAL: One Story at a Time
+
+**Execute ONLY the single selected story per invocation of this command.**
+
+- After completing Step 4 (all tasks within the story) and verifying tests pass, proceed to Step 5.
+- After Step 5, **STOP execution completely.**
+- **DO NOT** automatically begin the next story.
+- **DO NOT** ask "shall I continue with story 2?" and then start coding before the user responds.
+- Present the completion summary and **wait for the user** to explicitly request the next story.
+- The user must invoke `/execute-task` again or explicitly ask to continue with the next story.
+
 ### Step 5: Story Completion & Status Updates
 
 Update story file status and progress tracking files with completion details, ensuring all tests pass before marking complete.
@@ -194,3 +205,24 @@ Update story file status and progress tracking files with completion details, en
 - File-based progress tracking in `.code-captain/current-task-progress.md`
 - Story status updates in specification files
 - Test execution results documentation with pass/fail counts
+
+## CRITICAL: Command Boundary — STOP After Story Completion
+
+After completing a story and updating status files, present a summary in this format:
+
+```
+Story [N]: [Title] — COMPLETED
+
+Results:
+- Tests: [X] passed, [Y] failed
+- Tasks completed: [N/N]
+- Acceptance criteria: [all met / details]
+
+Updated files:
+- [list of modified/created files]
+
+Next available story: Story [N+1]: [Title]
+To continue, invoke /execute-task again or ask me to proceed with the next story.
+```
+
+**STOP here. Do NOT begin the next story automatically.**

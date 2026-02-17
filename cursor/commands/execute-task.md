@@ -285,6 +285,17 @@ Use available testing tools to verify:
 4. Repeat until NO tests fail
 5. Only then mark story as complete
 
+### CRITICAL: One Story at a Time
+
+**Execute ONLY the single selected story per invocation of this command.**
+
+- After completing Step 6 (test validation) and verifying tests pass, proceed to Step 7.
+- After Step 7, **STOP execution completely.**
+- **DO NOT** automatically begin the next story.
+- **DO NOT** ask "shall I continue with story 2?" and then start coding before the user responds.
+- Present the completion summary and **wait for the user** to explicitly request the next story.
+- The user must invoke `/execute-task` again or explicitly ask to continue with the next story.
+
 ### Step 7: Story Completion & Status Updates
 
 **Update story file status:**
@@ -367,8 +378,10 @@ Next available stories:
 - Story 2: Password Reset (4 tasks) - Not Started
 - Story 3: Profile Management (6 tasks) - Not Started
 
-Would you like to proceed with the next story?
+To continue, invoke /execute-task again or ask me to proceed with the next story.
 ```
+
+**STOP here. Do NOT begin the next story automatically.**
 
 **If ANY tests fail, present this instead:**
 

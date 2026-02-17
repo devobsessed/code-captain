@@ -444,6 +444,16 @@ class CodeCaptainInstaller {
     return recommendations;
   }
 
+  // Detect .sln files in the current directory
+  async detectSlnFiles() {
+    try {
+      const entries = await fs.readdir(".");
+      return entries.filter((entry) => entry.endsWith(".sln"));
+    } catch {
+      return [];
+    }
+  }
+
   // Auto-detect IDE preference
   detectIDE() {
     const detections = [];
@@ -527,9 +537,33 @@ class CodeCaptainInstaller {
     const changeInfo = await this.detectChanges(selectedIDE);
 
     if (changeInfo.isFirstInstall) {
-      // Fresh installation - install everything
+      // Fresh installation - install everything, but check for VS Solution View opt-in
+      let installVsSolution = false;
+      if (selectedIDE === "copilot") {
+        // Auto-detect .sln files to determine if VS Solution View is relevant
+        const slnFiles = await this.detectSlnFiles();
+        if (slnFiles.length > 0) {
+          console.log(
+            chalk.green(
+              `\n✨ Detected .NET solution file(s): ${slnFiles.join(", ")}`
+            )
+          );
+          const { enableVsSolution } = await inquirer.prompt([
+            {
+              type: "confirm",
+              name: "enableVsSolution",
+              message:
+                "Install VS Solution View (Directory.Build.props) to make Code Captain files visible in Visual Studio Solution Explorer?",
+              default: true,
+            },
+          ]);
+          installVsSolution = enableVsSolution;
+        }
+      }
+
       return {
         installAll: true,
+        installVsSolution,
         changeInfo,
       };
     }
@@ -1111,13 +1145,15 @@ class CodeCaptainInstaller {
         spinner.text = `Installing files... (${completed}/${files.length})`;
       }
 
-      // Handle Directory.Build.props for vs-solution component (opt-in only, not in installAll)
+      // Handle Directory.Build.props for vs-solution component
       let vsSolutionResult = null;
-      if (
-        !installOptions.installAll &&
-        selectedComponents &&
-        selectedComponents.includes("vs-solution")
-      ) {
+      const shouldInstallVsSolution =
+        (installOptions.installAll && installOptions.installVsSolution) ||
+        (!installOptions.installAll &&
+          selectedComponents &&
+          selectedComponents.includes("vs-solution"));
+
+      if (shouldInstallVsSolution) {
         spinner.text = "Installing Directory.Build.props...";
         vsSolutionResult = await this.installDirectoryBuildProps();
       }

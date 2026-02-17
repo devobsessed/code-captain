@@ -1,6 +1,6 @@
 {
   "name": "@devobsessed/code-captain",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Unified AI Development Agent System with intelligent change detection",
   "type": "module",
   "bin": {
