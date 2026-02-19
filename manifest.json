@@ -1,6 +1,6 @@
 {
-  "version": "0.3.0",
-  "timestamp": "2026-02-12T13:09:10.578Z",
+  "version": "0.4.0",
+  "timestamp": "2026-02-19T00:00:00.000Z",
   "commit": "a18e9dc145c3990823850611b321d0713e63d657",
   "description": "Code Captain file manifest for change detection",
   "files": {
@@ -225,8 +225,16 @@
       "size": 475,
       "lastModified": "2026-02-11T23:21:47.573Z",
       "version": "0.3.0",
-      "component": "vs-solution",
+      "component": "vs-solution-legacy",
       "description": "<!-- Code Captain: Make .github/ Copilot files visible in VS Solution Explorer -->"
+    },
+    "copilot/code-captain.csproj": {
+      "hash": "sha256:035c6482ba0c7e80c40669e01c9b557719450fa4be1bd6b07f1ff757f926619c",
+      "size": 857,
+      "lastModified": "2026-02-19T00:00:00.000Z",
+      "version": "0.4.0",
+      "component": "vs-solution",
+      "description": "<!-- Code Captain: Make Copilot and Code Captain files visible in VS Solution Explorer -->"
     },
     "claude-code/agents/code-captain.md": {
       "hash": "sha256:6d87de22934ab5eecc48a899907dba6c38d2ecc30e96aa871eaf4fe4d500a08f",

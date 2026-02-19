@@ -80,6 +80,12 @@ describe("Command Availability Smoke Tests", () => {
         await fileExists("copilot/Directory.Build.props")
       ).toBe(true);
     });
+
+    test("copilot has code-captain.csproj template", async () => {
+      expect(
+        await fileExists("copilot/code-captain.csproj")
+      ).toBe(true);
+    });
   });
 
   describe("Command Discovery", () => {
