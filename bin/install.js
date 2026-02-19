@@ -454,6 +454,156 @@ class CodeCaptainInstaller {
     }
   }
 
+  // Generate a random GUID (uppercase)
+  generateGuid() {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+      .replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0;
+        return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+      })
+      .toUpperCase();
+  }
+
+  // Add code-captain.csproj to the first .sln file found in the current directory
+  async addProjectToSln(slnPath, csprojFileName) {
+    const content = await fs.readFile(slnPath, "utf8");
+    const projectName = path.basename(csprojFileName, ".csproj");
+    const idMarker = `"${csprojFileName}"`;
+
+    if (content.includes(idMarker)) return "up-to-date";
+
+    const projectGuid = this.generateGuid();
+    // SDK-style C# project type GUID
+    const typeGuid = "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}";
+    const projectBlock =
+      `Project("${typeGuid}") = "${projectName}", "${csprojFileName}", "{${projectGuid}}"\n` +
+      `EndProject\n`;
+
+    // Insert before the Global section
+    let updated = content.replace(/^(Global\r?\n)/m, `${projectBlock}$1`);
+
+    // Parse solution configs and add ActiveCfg entries (but not Build.0, so it's excluded from builds)
+    const configSectionMatch = content.match(
+      /GlobalSection\(SolutionConfigurationPlatforms\)[^\n]*\n([\s\S]*?)EndGlobalSection/
+    );
+    if (configSectionMatch) {
+      const configLines = configSectionMatch[1]
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter((l) => l.includes(" = "));
+      const configNames = configLines.map((l) => l.split(" = ")[0]);
+
+      if (configNames.length > 0) {
+        const activeCfgEntries = configNames
+          .map((c) => `\t\t{${projectGuid}}.${c}.ActiveCfg = ${c}`)
+          .join("\n");
+
+        updated = updated.replace(
+          /(GlobalSection\(ProjectConfigurationPlatforms\)[^\n]*\n)([\s\S]*?)(EndGlobalSection)/,
+          `$1$2${activeCfgEntries}\n\t$3`
+        );
+      }
+    }
+
+    await fs.copy(slnPath, `${slnPath}.backup`);
+    await fs.writeFile(slnPath, updated);
+    return "updated";
+  }
+
+  // Remove Code Captain ItemGroup from Directory.Build.props (migration from old approach)
+  async migrateDirectoryBuildProps() {
+    const targetPath = "Directory.Build.props";
+    if (!(await fs.pathExists(targetPath))) return null;
+
+    const content = await fs.readFile(targetPath, "utf8");
+    if (!content.includes('Label="Code Captain"')) return null;
+
+    // Remove the comment + ItemGroup block
+    let updated = content
+      .replace(/[ \t]*<!--[^\n]*Code Captain[^\n]*-->\r?\n/g, "")
+      .replace(
+        /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>\r?\n?/g,
+        ""
+      );
+
+    await fs.copy(targetPath, `${targetPath}.backup`);
+    await fs.writeFile(targetPath, updated);
+    return "migrated";
+  }
+
+  // Install code-captain.csproj and register it in the .sln
+  async installCodeCaptainProject() {
+    const targetPath = "code-captain.csproj";
+    const templateSource = "copilot/code-captain.csproj";
+    const marker = 'Label="Code Captain"';
+
+    // Read template
+    let templateContent;
+    if (this.config.localSource) {
+      const localPath = path.join(this.config.localSource, templateSource);
+      if (!(await fs.pathExists(localPath))) {
+        throw new Error(`Template not found: ${localPath}`);
+      }
+      templateContent = await fs.readFile(localPath, "utf8");
+    } else {
+      const url = `${this.config.baseUrl}/${templateSource}`;
+      const response = await this.fetchWithTimeout(url, {}, 20000);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      templateContent = await response.text();
+    }
+
+    // Extract the ItemGroup block from the template (for update comparison)
+    const templateBlockMatch = templateContent.match(
+      /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>/
+    );
+    if (!templateBlockMatch) {
+      throw new Error("Template missing Code Captain ItemGroup");
+    }
+
+    const exists = await fs.pathExists(targetPath);
+    let csprojAction;
+
+    if (!exists) {
+      await fs.writeFile(targetPath, templateContent);
+      csprojAction = "created";
+    } else {
+      const existingContent = await fs.readFile(targetPath, "utf8");
+      if (existingContent.includes(marker)) {
+        const existingBlock = existingContent.match(
+          /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>/
+        );
+        if (existingBlock && existingBlock[0] === templateBlockMatch[0]) {
+          csprojAction = "up-to-date";
+        } else {
+          await fs.copy(targetPath, `${targetPath}.backup`);
+          const updatedContent = existingContent.replace(
+            /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>/,
+            templateBlockMatch[0]
+          );
+          await fs.writeFile(targetPath, updatedContent);
+          csprojAction = "updated";
+        }
+      } else {
+        // Not a Code Captain file — don't touch it
+        csprojAction = "skipped";
+      }
+    }
+
+    // Register in .sln
+    const slnFiles = await this.detectSlnFiles();
+    let slnAction = "no-sln";
+    if (slnFiles.length > 0) {
+      slnAction = await this.addProjectToSln(slnFiles[0], targetPath);
+    }
+
+    // Migrate: remove Code Captain section from Directory.Build.props if present
+    const migrationAction = await this.migrateDirectoryBuildProps();
+
+    return { csprojAction, slnAction, migrationAction };
+  }
+
   // Auto-detect IDE preference
   detectIDE() {
     const detections = [];
@@ -553,7 +703,7 @@ class CodeCaptainInstaller {
               type: "confirm",
               name: "enableVsSolution",
               message:
-                "Install VS Solution View (Directory.Build.props) to make Code Captain files visible in Visual Studio Solution Explorer?",
+                "Install VS Solution View (code-captain.csproj) to make Code Captain files visible in Visual Studio Solution Explorer?",
               default: true,
             },
           ]);
@@ -726,7 +876,7 @@ class CodeCaptainInstaller {
           { name: "Copilot Agents", value: "agents", checked: true },
           { name: "Copilot Prompts", value: "prompts", checked: true },
           {
-            name: "VS Solution View (Directory.Build.props)",
+            name: "VS Solution View (code-captain.csproj)",
             value: "vs-solution",
             checked: false,
           },
@@ -916,7 +1066,7 @@ class CodeCaptainInstaller {
 
     // Extract the ItemGroup block from template
     const itemGroupMatch = templateContent.match(
-      /[ \t]*<ItemGroup Label="Code Captain">[\s\S]*?<\/ItemGroup>/
+      /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>/
     );
     if (!itemGroupMatch) {
       throw new Error("Template missing Code Captain ItemGroup");
@@ -937,7 +1087,7 @@ class CodeCaptainInstaller {
     if (existingContent.includes(marker)) {
       // Case 3: Already has Code Captain content — replace if changed
       const existingBlock = existingContent.match(
-        /[ \t]*<ItemGroup Label="Code Captain">[\s\S]*?<\/ItemGroup>/
+        /[ \t]*<ItemGroup Label="Code Captain"[^>]*>[\s\S]*?<\/ItemGroup>/
       );
       if (existingBlock && existingBlock[0] === itemGroupBlock) {
         return { action: "up-to-date" };
@@ -1145,7 +1295,7 @@ class CodeCaptainInstaller {
         spinner.text = `Installing files... (${completed}/${files.length})`;
       }
 
-      // Handle Directory.Build.props for vs-solution component
+      // Handle vs-solution component (code-captain.csproj + .sln registration)
       let vsSolutionResult = null;
       const shouldInstallVsSolution =
         (installOptions.installAll && installOptions.installVsSolution) ||
@@ -1154,8 +1304,8 @@ class CodeCaptainInstaller {
           selectedComponents.includes("vs-solution"));
 
       if (shouldInstallVsSolution) {
-        spinner.text = "Installing Directory.Build.props...";
-        vsSolutionResult = await this.installDirectoryBuildProps();
+        spinner.text = "Installing code-captain.csproj...";
+        vsSolutionResult = await this.installCodeCaptainProject();
       }
 
       spinner.succeed(
@@ -1303,16 +1453,27 @@ class CodeCaptainInstaller {
         break;
     }
 
-    // Show Directory.Build.props result if applicable
+    // Show VS Solution View result if applicable
     if (installResult.vsSolutionResult) {
-      const action = installResult.vsSolutionResult.action;
-      const messages = {
-        created: "Created Directory.Build.props — .github/ files now visible in VS Solution Explorer",
-        merged: "Merged Code Captain items into existing Directory.Build.props (backup saved as .backup)",
-        updated: "Updated Code Captain section in Directory.Build.props (backup saved as .backup)",
-        "up-to-date": "Directory.Build.props is already up to date",
+      const { csprojAction, slnAction, migrationAction } =
+        installResult.vsSolutionResult;
+      const csprojMessages = {
+        created: "Created code-captain.csproj",
+        updated: "Updated code-captain.csproj (backup saved as .backup)",
+        "up-to-date": "code-captain.csproj is already up to date",
+        skipped: "code-captain.csproj skipped (file exists but was not created by Code Captain)",
       };
-      console.log(chalk.cyan("\n📁 VS Solution View:"), messages[action]);
+      const slnMessages = {
+        updated: "registered in solution (.sln backup saved as .backup)",
+        "up-to-date": "already registered in solution",
+        "no-sln": "no .sln file found — add code-captain.csproj to your solution manually",
+      };
+      let message = csprojMessages[csprojAction] || csprojAction;
+      if (slnMessages[slnAction]) message += ` — ${slnMessages[slnAction]}`;
+      if (migrationAction === "migrated") {
+        message += " — removed Code Captain section from Directory.Build.props (backup saved)";
+      }
+      console.log(chalk.cyan("\n📁 VS Solution View:"), message);
     }
 
     console.log(

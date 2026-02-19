@@ -253,6 +253,41 @@ describe("Structure Validation Tests", () => {
     });
   });
 
+  describe("code-captain.csproj Template", () => {
+    let content;
+
+    beforeAll(async () => {
+      content = await fs.readFile("copilot/code-captain.csproj", "utf8");
+    });
+
+    test("template is valid XML structure", () => {
+      expect(content).toMatch(/^<Project/);
+      expect(content).toMatch(/<\/Project>\s*$/);
+    });
+
+    test("template has SDK attribute", () => {
+      expect(content).toContain('Sdk="Microsoft.NET.Sdk"');
+    });
+
+    test("template has Code Captain label marker", () => {
+      expect(content).toContain('Label="Code Captain"');
+    });
+
+    test("template includes copilot-instructions.md", () => {
+      expect(content).toContain(".github\\copilot-instructions.md");
+    });
+
+    test("template includes wildcard patterns for agents and prompts", () => {
+      expect(content).toContain(".github\\agents\\**\\*");
+      expect(content).toContain(".github\\prompts\\**\\*");
+    });
+
+    test("template uses Link attributes for virtual folders", () => {
+      const linkCount = (content.match(/Link="/g) || []).length;
+      expect(linkCount).toBeGreaterThanOrEqual(3);
+    });
+  });
+
   describe("Platform-Specific Requirements", () => {
     test("copilot prompts reference correct tools", async () => {
       const commandFiles = await getCommandFiles("copilot");
