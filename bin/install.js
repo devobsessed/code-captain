@@ -444,14 +444,42 @@ class CodeCaptainInstaller {
     return recommendations;
   }
 
-  // Detect .sln files in the current directory
+  // Detect .sln / .slnx files in the current directory
   async detectSlnFiles() {
     try {
       const entries = await fs.readdir(".");
-      return entries.filter((entry) => entry.endsWith(".sln"));
+      return entries.filter(
+        (entry) => entry.endsWith(".sln") || entry.endsWith(".slnx")
+      );
     } catch {
       return [];
     }
+  }
+
+  // Add code-captain.csproj to an XML-format .slnx file
+  async addProjectToSlnx(slnxPath, csprojFileName) {
+    const content = await fs.readFile(slnxPath, "utf8");
+    const idMarker = `Path="${csprojFileName}"`;
+
+    if (content.includes(idMarker)) return "up-to-date";
+
+    // Detect line ending style
+    const nl = content.includes("\r\n") ? "\r\n" : "\n";
+
+    const updated = content.replace(
+      /<\/Solution>/,
+      `  <Project Path="${csprojFileName}" />${nl}</Solution>`
+    );
+
+    if (updated === content) {
+      throw new Error(
+        `Could not find </Solution> in ${slnxPath}. Please add code-captain.csproj to your solution manually in Visual Studio.`
+      );
+    }
+
+    await fs.copy(slnxPath, `${slnxPath}.backup`);
+    await fs.writeFile(slnxPath, updated);
+    return "updated";
   }
 
   // Generate a random GUID (uppercase)
@@ -472,15 +500,33 @@ class CodeCaptainInstaller {
 
     if (content.includes(idMarker)) return "up-to-date";
 
+    // Detect line ending style used by the .sln file
+    const nl = content.includes("\r\n") ? "\r\n" : "\n";
+
     const projectGuid = this.generateGuid();
     // SDK-style C# project type GUID
     const typeGuid = "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}";
     const projectBlock =
-      `Project("${typeGuid}") = "${projectName}", "${csprojFileName}", "{${projectGuid}}"\n` +
-      `EndProject\n`;
+      `Project("${typeGuid}") = "${projectName}", "${csprojFileName}", "{${projectGuid}}"${nl}` +
+      `EndProject${nl}`;
 
-    // Insert before the Global section
-    let updated = content.replace(/^(Global\r?\n)/m, `${projectBlock}$1`);
+    // Find the last EndProject and insert after it (more reliable than searching for Global)
+    const lastEndProjectIdx = content.lastIndexOf(`EndProject${nl}`);
+    let updated;
+    if (lastEndProjectIdx !== -1) {
+      const insertAt = lastEndProjectIdx + `EndProject${nl}`.length;
+      updated = content.slice(0, insertAt) + projectBlock + content.slice(insertAt);
+    } else {
+      // Fallback: insert before Global section
+      updated = content.replace(/^(Global\r?\n)/m, `${projectBlock}$1`);
+    }
+
+    if (updated === content) {
+      // Regex fallback also failed — .sln format not recognized
+      throw new Error(
+        `Could not find insertion point in ${slnPath}. Please add code-captain.csproj to your solution manually in Visual Studio.`
+      );
+    }
 
     // Parse solution configs and add ActiveCfg entries (but not Build.0, so it's excluded from builds)
     const configSectionMatch = content.match(
@@ -496,11 +542,11 @@ class CodeCaptainInstaller {
       if (configNames.length > 0) {
         const activeCfgEntries = configNames
           .map((c) => `\t\t{${projectGuid}}.${c}.ActiveCfg = ${c}`)
-          .join("\n");
+          .join(nl);
 
         updated = updated.replace(
           /(GlobalSection\(ProjectConfigurationPlatforms\)[^\n]*\n)([\s\S]*?)(EndGlobalSection)/,
-          `$1$2${activeCfgEntries}\n\t$3`
+          `$1$2${activeCfgEntries}${nl}\t$3`
         );
       }
     }
@@ -591,11 +637,16 @@ class CodeCaptainInstaller {
       }
     }
 
-    // Register in .sln
+    // Register in .sln / .slnx
     const slnFiles = await this.detectSlnFiles();
     let slnAction = "no-sln";
     if (slnFiles.length > 0) {
-      slnAction = await this.addProjectToSln(slnFiles[0], targetPath);
+      const slnFile = slnFiles[0];
+      if (slnFile.endsWith(".slnx")) {
+        slnAction = await this.addProjectToSlnx(slnFile, targetPath);
+      } else {
+        slnAction = await this.addProjectToSln(slnFile, targetPath);
+      }
     }
 
     // Migrate: remove Code Captain section from Directory.Build.props if present
@@ -1466,7 +1517,7 @@ class CodeCaptainInstaller {
       const slnMessages = {
         updated: "registered in solution (.sln backup saved as .backup)",
         "up-to-date": "already registered in solution",
-        "no-sln": "no .sln file found — add code-captain.csproj to your solution manually",
+        "no-sln": "no .sln/.slnx file found — add code-captain.csproj to your solution manually in Visual Studio",
       };
       let message = csprojMessages[csprojAction] || csprojAction;
       if (slnMessages[slnAction]) message += ` — ${slnMessages[slnAction]}`;
