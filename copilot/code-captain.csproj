@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
   <ItemGroup Label="Code Captain">
     <None Include=".github\copilot-instructions.md" Link="Code Captain\copilot-instructions.md" />
