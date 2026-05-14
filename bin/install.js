@@ -938,6 +938,8 @@ class CodeCaptainInstaller {
           ...baseChoices,
           { name: "Claude Agents", value: "agents", checked: true },
           { name: "Claude Commands", value: "claude-commands", checked: true },
+          { name: "Claude Skills (analyze-repos, mcp-analysis, explain-code, research, status, swab)", value: "skills", checked: true },
+          { name: "MCP Server Config (.mcp.json template — skipped if already exists)", value: "mcp-config", checked: true },
         ];
 
       default:
@@ -1299,7 +1301,15 @@ class CodeCaptainInstaller {
 
         // Claude commands
         if (includeAll || selectedComponents.includes("claude-commands")) {
-          const claudeCommands = ["cc-create-spec.md", "cc-initialize.md"];
+          const claudeCommands = [
+            "create-spec.md",
+            "initialize.md",
+            "create-adr.md",
+            "edit-spec.md",
+            "execute-task.md",
+            "plan-product.md",
+            "new-command.md",
+          ];
 
           claudeCommands.forEach((command) => {
             files.push({
@@ -1307,6 +1317,36 @@ class CodeCaptainInstaller {
               target: `.claude/commands/${command}`,
               component: "claude-commands",
             });
+          });
+        }
+
+        // Claude skills
+        if (includeAll || selectedComponents.includes("skills")) {
+          const claudeSkills = [
+            "analyze-repos",
+            "mcp-analysis",
+            "explain-code",
+            "research",
+            "status",
+            "swab",
+          ];
+
+          claudeSkills.forEach((skill) => {
+            files.push({
+              source: `claude-code/skills/${skill}/SKILL.md`,
+              target: `.claude/skills/${skill}/SKILL.md`,
+              component: "skills",
+            });
+          });
+        }
+
+        // MCP config (only installed if .mcp.json does not already exist)
+        if (includeAll || selectedComponents.includes("mcp-config")) {
+          files.push({
+            source: "claude-code/.mcp.json",
+            target: ".mcp.json",
+            component: "mcp-config",
+            skipIfExists: true,
           });
         }
 
@@ -1340,7 +1380,14 @@ class CodeCaptainInstaller {
 
       // Install all files
       let completed = 0;
+      const skippedFiles = [];
       for (const file of files) {
+        if (file.skipIfExists && await fs.pathExists(file.target)) {
+          skippedFiles.push(file.target);
+          completed++;
+          spinner.text = `Installing files... (${completed}/${files.length})`;
+          continue;
+        }
         await this.downloadFile(file.source, file.target);
         completed++;
         spinner.text = `Installing files... (${completed}/${files.length})`;
@@ -1380,6 +1427,7 @@ class CodeCaptainInstaller {
             installOptions.changeInfo.newFiles.length > 0),
         backupsCreated: backupPaths.length > 0,
         backupPaths: backupPaths,
+        skippedFiles,
         vsSolutionResult,
       };
     } catch (error) {
@@ -1483,24 +1531,65 @@ class CodeCaptainInstaller {
       case "claude":
         console.log(
           chalk.blue("1.") +
-            " Claude agents and commands are installed in " +
+            " Claude agents, commands, and skills are installed in " +
             chalk.cyan(".claude/")
         );
         console.log(
           chalk.blue("2.") +
-            " Reference the agents in " +
-            chalk.cyan(".claude/agents/") +
-            " for specialized workflows"
+            " Run commands with " +
+            chalk.cyan("/command-name") +
+            " and skills with " +
+            chalk.cyan("/skill-name") +
+            " in Claude Code"
         );
         console.log(
           chalk.blue("3.") +
-            " Use command templates from " +
-            chalk.cyan(".claude/commands/")
+            " Key commands: " +
+            chalk.cyan("/create-spec") +
+            ", " +
+            chalk.cyan("/execute-task") +
+            ", " +
+            chalk.cyan("/plan-product") +
+            ", " +
+            chalk.cyan("/create-adr") +
+            ", " +
+            chalk.cyan("/edit-spec") +
+            ", " +
+            chalk.cyan("/new-command")
         );
         console.log(
           chalk.blue("4.") +
-            " Import agent contexts directly into Claude conversations"
+            " Key skills: " +
+            chalk.cyan("/analyze-repos") +
+            ", " +
+            chalk.cyan("/research") +
+            ", " +
+            chalk.cyan("/explain-code") +
+            ", " +
+            chalk.cyan("/status") +
+            ", " +
+            chalk.cyan("/swab") +
+            ", " +
+            chalk.cyan("/mcp-analysis")
         );
+        if (installResult.skippedFiles && installResult.skippedFiles.includes(".mcp.json")) {
+          console.log(
+            chalk.yellow("5.") +
+              " " +
+              chalk.cyan(".mcp.json") +
+              " was skipped — your existing MCP config was preserved"
+          );
+        } else {
+          console.log(
+            chalk.blue("5.") +
+              " Set environment variables and update " +
+              chalk.cyan(".mcp.json") +
+              " with your credentials:"
+          );
+          console.log(chalk.gray("   ATLASSIAN_URL, ATLASSIAN_EMAIL, ATLASSIAN_API_TOKEN"));
+          console.log(chalk.gray("   GITHUB_PERSONAL_ACCESS_TOKEN"));
+          console.log(chalk.gray("   (GitHub MCP requires Docker — see .mcp.json for alternatives)"));
+        }
         break;
     }
 
