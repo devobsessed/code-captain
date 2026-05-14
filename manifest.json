@@ -1,6 +1,6 @@
 {
-  "version": "0.4.0",
-  "timestamp": "2026-02-19T00:00:00.000Z",
+  "version": "0.6.0",
+  "timestamp": "2026-05-14T12:00:00.000Z",
   "commit": "a18e9dc145c3990823850611b321d0713e63d657",
   "description": "Code Captain file manifest for change detection",
   "files": {
@@ -268,24 +268,141 @@
       "component": "agents",
       "description": "Specialized agent for generating technical specifications based on requirements. Creates architecture documents, database schemas, API specs, and UI wireframes only when needed, ensuring technical details support user story implementation."
     },
-    "claude-code/commands/cc-create-spec.md": {
+    "claude-code/commands/create-spec.md": {
       "hash": "sha256:5f401313635a46278251df9cba31c0228270b15d6ddd06cf64c72274cee39ea4",
       "size": 25185,
-      "lastModified": "2026-02-11T15:17:33.463Z",
-      "version": "0.3.0",
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
       "component": "claude-commands",
-      "description": "Generate comprehensive feature specifications using a contract-first approach that ensures complete ..."
+      "description": "Generate comprehensive feature specifications using a contract-first approach that ensures complete alignment before creating any files."
     },
-    "claude-code/commands/cc-initialize.md": {
+    "claude-code/commands/initialize.md": {
       "hash": "sha256:7c94db2c53c3b937377074d1ef272cdc9b026ebb108c68770c4836f476a7abdc",
       "size": 15817,
-      "lastModified": "2025-11-25T16:41:04.601Z",
-      "version": "0.3.0",
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
       "component": "claude-commands",
-      "description": "Set up technical foundation and development infrastructure by detecting if this is a greenfield (new..."
+      "description": "Set up technical foundation and development infrastructure by detecting if this is a greenfield or existing project."
+    },
+    "claude-code/commands/create-adr.md": {
+      "hash": "sha256:7821b981c8e4653ba56e3c33eac835f3b515986028afcaae32856d3e2ddffec0",
+      "size": 15604,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "claude-commands",
+      "description": "Create comprehensive Architecture Decision Records with research-first workflow, alternatives analysis, and consequence documentation."
+    },
+    "claude-code/commands/edit-spec.md": {
+      "hash": "sha256:965037d1359f2046a19c3f17fc0e918b6e51312014d366cad3b2b08199e778d4",
+      "size": 13657,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "claude-commands",
+      "description": "Modify existing specifications using a contract-first approach with impact analysis, backup, and change tracking."
+    },
+    "claude-code/commands/execute-task.md": {
+      "hash": "sha256:795d6d0a7f1eea0e36526e0a68739cb57638c53562de7be7cc4d33e2839bcf67",
+      "size": 16567,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "claude-commands",
+      "description": "Execute specification tasks using TDD workflow with mandatory 100% test pass rate, one story at a time."
+    },
+    "claude-code/commands/plan-product.md": {
+      "hash": "sha256:80d788b58d4e0184f1727611a1bb06ec18322e38e790c3b3adcf0be3ec98840c",
+      "size": 15876,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "claude-commands",
+      "description": "Generate comprehensive product planning documentation with contract-first discovery, roadmap phases, and decision log."
+    },
+    "claude-code/commands/new-command.md": {
+      "hash": "sha256:fe6a271c214f3d0b7460d946111ecf99621148dc73cafe0be424307380ac8a0f",
+      "size": 12677,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "claude-commands",
+      "description": "Create new Code Captain commands or skills for Claude Code following established patterns and conventions."
+    },
+    "claude-code/.mcp.json": {
+      "hash": "sha256:83f0a2b8de2e0f880ea21a9e43caeb9225f2e0ced3c6124315e9ae68b4076bdd",
+      "size": 665,
+      "lastModified": "2026-05-14T00:00:00.000Z",
+      "version": "0.5.0",
+      "component": "mcp-config",
+      "description": "MCP server configuration template for Atlassian (Jira) and GitHub. Uses ${ENV_VAR} expansion — set ATLASSIAN_URL, ATLASSIAN_EMAIL, ATLASSIAN_API_TOKEN, and GITHUB_PERSONAL_ACCESS_TOKEN in your environment."
+    },
+    "claude-code/skills/analyze-repos/SKILL.md": {
+      "hash": "sha256:86b92b15611d1f8b6771c144bb4b994ce47fa887275553979d6b956363bda2b3",
+      "size": 19050,
+      "lastModified": "2026-05-14T00:00:00.000Z",
+      "version": "0.5.0",
+      "component": "skills",
+      "description": "Analyze repos in a workspace — generate compressed codebase indexes (AGENTS.md), per-repo docs, cross-repo dependency map, and master TOC for AI agent consumption."
+    },
+    "claude-code/skills/mcp-analysis/SKILL.md": {
+      "hash": "sha256:1260c2b3dbdcc96686474ecf90d7d5b5611564905b2c8a9b26b281f215b30d23",
+      "size": 9799,
+      "lastModified": "2026-05-14T00:00:00.000Z",
+      "version": "0.5.0",
+      "component": "skills",
+      "description": "Analyze an MCP server's GitHub repository for security risks, malicious intent, and code quality. Produces a trust rating and recommends whether to use it or suggests safer alternatives."
+    },
+    "claude-code/skills/explain-code/SKILL.md": {
+      "hash": "sha256:418c714311cd502fdeae63cf2fe740cdfb6c2a995fc16dc5bcd898e203b2e7f5",
+      "size": 4746,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "skills",
+      "description": "Explain a code element, file, or line range with Mermaid diagrams and architectural context. Saves to .code-captain/explanations/."
+    },
+    "claude-code/skills/research/SKILL.md": {
+      "hash": "sha256:c78a0e3d0c5742ea7585b42948b553f5c2d6d26e9a792ddb0cc868e0c2954b40",
+      "size": 6653,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "skills",
+      "description": "Conduct systematic multi-phase research on a topic and produce a documented findings report in .code-captain/research/."
+    },
+    "claude-code/skills/status/SKILL.md": {
+      "hash": "sha256:6a926e00b1e32df718b506a28e75c10a27384d225bd491896a1e0482da72d605",
+      "size": 6997,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "skills",
+      "description": "Show a comprehensive project status report with git state, active spec progress, and suggested next actions."
+    },
+    "claude-code/skills/swab/SKILL.md": {
+      "hash": "sha256:bbc7b95695db2b3f3303e71ab565245056558e19ee4f42150255c2499f82b9a5",
+      "size": 5070,
+      "lastModified": "2026-05-14T12:00:00.000Z",
+      "version": "0.6.0",
+      "component": "skills",
+      "description": "Find and apply one small, safe code cleanup improvement with user approval, following the Boy Scout Rule."
     }
   },
   "changelog": {
+    "0.6.0": {
+      "date": "2026-05-14",
+      "changes": [
+        "Rename cc-create-spec.md → create-spec.md and cc-initialize.md → initialize.md (remove cc- prefix from Claude commands)",
+        "Port 5 cursor commands to Claude Code: create-adr, edit-spec, execute-task, plan-product, new-command",
+        "Port 4 cursor commands to Claude Code skills: explain-code, research, status, swab",
+        "All ported files use Claude Code tools (Grep, Glob, Bash, Read, Write, Edit, TodoWrite, WebSearch)",
+        "new-command updated to support both commands and skills for Claude Code ecosystem",
+        "Install script: updated Claude commands and skills lists; new post-install instructions listing all commands and skills"
+      ]
+    },
+    "0.5.0": {
+      "date": "2026-05-14",
+      "changes": [
+        "Add analyze-repos skill — generates AGENTS.md, codebase indexes, and cross-repo dependency maps",
+        "Add mcp-analysis skill — security audits MCP server GitHub repos with A-F trust ratings",
+        "Add .mcp.json template — Atlassian and GitHub MCP servers in current stdio format with ${ENV_VAR} expansion",
+        "Install script: new 'Claude Skills' and 'MCP Server Config' component options",
+        "Install script: .mcp.json skipped automatically if one already exists"
+      ]
+    },
     "0.3.0": {
       "date": "2026-02-12",
       "changes": []
